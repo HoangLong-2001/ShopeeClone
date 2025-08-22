@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
-import { FORM_VALIDATE, getRules } from '~/constants/common'
+import { getRules } from '~/constants/common'
 import type { IFormState } from '~/types/common'
 
 export default function Register() {
