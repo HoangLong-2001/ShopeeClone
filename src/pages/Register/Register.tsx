@@ -1,16 +1,17 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
-import { FORM_VALIDATE } from '~/constants/common'
+import { getRules } from '~/constants/common'
 import type { IFormState } from '~/types/common'
 
 export default function Register() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm<IFormState>()
-  console.log(errors)
   const onSubmit = handleSubmit((data) => console.log(data))
+  const rules = getRules(getValues)
   return (
     <div className='bg-orange'>
       <div className='max-w-7xl mx-auto px-4'>
@@ -21,27 +22,30 @@ export default function Register() {
               <div className='mt-8'>
                 <input
                   type='email'
+                  autoComplete='on'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                   placeholder='Email'
-                  {...register('email', FORM_VALIDATE.email)}
+                  {...register('email', rules.email)}
                 />
                 <div className='mt-1 text-red-600 min-h-[1rem] text-sm'>{errors.email?.message}</div>
               </div>
               <div className='mt-3'>
                 <input
                   type='password'
+                  autoComplete='on'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                   placeholder='Password'
-                  {...register('password', FORM_VALIDATE.password)}
+                  {...register('password', rules.password)}
                 />
                 <div className='mt-1 text-red-600 min-h-[1rem] text-sm'>{errors.password?.message}</div>
               </div>
               <div className='mt-3'>
                 <input
                   type='password'
+                  autoComplete='on'
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                   placeholder='Confirm Password'
-                  {...register('confirm_password', FORM_VALIDATE.confirm_password)}
+                  {...register('confirm_password', rules.confirm_password)}
                 />
                 <div className='mt-1 text-red-600 min-h-[1rem] text-sm'>{errors.confirm_password?.message}</div>
               </div>
