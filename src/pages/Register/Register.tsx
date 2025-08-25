@@ -1,18 +1,21 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import Input from '~/components/Input'
-import { getRules } from '~/constants/common'
+import { schema } from '~/components/utils/rules'
 import type { IFormState } from '~/types/common'
 
 export default function Register() {
   const {
     register,
     handleSubmit,
-    getValues,
+    // getValues,
     formState: { errors }
-  } = useForm<IFormState>()
+  } = useForm<IFormState>({
+    resolver: yupResolver(schema)
+  })
   const onSubmit = handleSubmit((data) => console.log(data))
-  const rules = getRules(getValues)
+  // const rules = getRules(getValues)
   return (
     <div className='bg-orange'>
       <div className='container'>
@@ -26,7 +29,6 @@ export default function Register() {
                 placeholder='Email'
                 register={register}
                 name='email'
-                rules={rules.email}
                 errorMessage={errors.email?.message}
               />
 
@@ -36,7 +38,6 @@ export default function Register() {
                 placeholder='Password'
                 register={register}
                 name='password'
-                rules={rules.password}
                 autoComplete='on'
                 errorMessage={errors.password?.message}
               />
@@ -47,7 +48,6 @@ export default function Register() {
                 placeholder='Confirm Password'
                 register={register}
                 name='confirm_password'
-                rules={rules.confirm_password}
                 autoComplete='on'
                 errorMessage={errors.confirm_password?.message}
               />
