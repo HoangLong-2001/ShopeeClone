@@ -1,4 +1,4 @@
-import type { FORM_VALIDATE_TYPE } from '~/types/common'
+import type { FORM_VALIDATE_TYPE } from '~/types/common.type'
 
 export const FORM_VALIDATE: FORM_VALIDATE_TYPE = {
   email: {

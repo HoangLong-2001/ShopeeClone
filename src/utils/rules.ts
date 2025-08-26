@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 import type { UseFormGetValues } from 'react-hook-form'
-import type { FORM_VALIDATE_TYPE, IFormState } from '~/types/common'
+import type { FORM_VALIDATE_TYPE, IFormState } from '~/types/common.type'
 
 export const getRules = (getValues?: UseFormGetValues<IFormState>): FORM_VALIDATE_TYPE => ({
   email: {
