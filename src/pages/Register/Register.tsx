@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { forEach, omit } from 'lodash'
+import { omit } from 'lodash'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
@@ -26,7 +26,7 @@ export default function Register() {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
       onSuccess(data) {
-        console.log('data',data)
+        console.log('data', data)
       },
       onError(error) {
         if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password'>>>(error)) {
