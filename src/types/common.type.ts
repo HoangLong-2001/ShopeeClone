@@ -12,6 +12,6 @@ export type FORM_VALIDATE_TYPE = {
 }
 export type IFormState = yup.InferType<typeof schema>
 export interface IResponse<Data> {
-  message: string,
+  message: string
   data?: Data
 }

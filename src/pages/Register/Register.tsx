@@ -26,9 +26,9 @@ export default function Register() {
       onSuccess(data) {
         console.log(data)
       },
-      onError(error, variables, context) {
-        console.log("ERROR",error);
-      },
+      onError(error) {
+        console.log('ERROR', error)
+      }
     })
   })
   // const rules = getRules(getValues)
