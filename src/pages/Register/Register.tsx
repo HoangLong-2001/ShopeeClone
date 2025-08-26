@@ -1,18 +1,20 @@
 import { useMutation } from '@tanstack/react-query'
-import { omit } from 'lodash'
+import { forEach, omit } from 'lodash'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import Input from '~/components/Input'
 import { schema } from '~/utils/rules'
-import type { IFormState } from '~/types/common.type'
+import type { IFormState, IResponse } from '~/types/common.type'
 import { registerAccount } from '~/apis/auth.api'
+import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 
 export default function Register() {
   const {
     register,
     handleSubmit,
     // getValues,
+    setError,
     formState: { errors }
   } = useForm<IFormState>({
     resolver: yupResolver(schema)
@@ -24,10 +26,25 @@ export default function Register() {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
       onSuccess(data) {
-        console.log(data)
+        console.log('data',data)
       },
       onError(error) {
-        console.log('ERROR', error)
+        if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password'>>>(error)) {
+          const formError = error.response?.data.data
+          console.log('error', error)
+          if (formError?.email) {
+            setError('email', {
+              message: formError.email,
+              type: 'Server'
+            })
+          }
+          if (formError?.password) {
+            setError('password', {
+              message: formError.password,
+              type: 'Server'
+            })
+          }
+        }
       }
     })
   })
