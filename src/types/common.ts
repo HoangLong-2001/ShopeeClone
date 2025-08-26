@@ -1,6 +1,6 @@
 import yup from 'yup'
 import type { RegisterOptions } from 'react-hook-form'
-import type { schema } from '~/components/utils/rules'
+import type { schema } from '~/utils/rules'
 
 // export declare interface IFormState {
 //   email: string
