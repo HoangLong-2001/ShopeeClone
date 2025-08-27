@@ -1,31 +1,76 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
+import { toast } from 'react-toastify'
+import { login } from '~/apis/auth.api'
+import Input from '~/components/Input'
+import type { IFormState, IResponse } from '~/types/common.type'
+import { schema } from '~/utils/rules'
+import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    // getValues,
+    setError,
+    formState: { errors }
+  } = useForm<Omit<IFormState, 'confirm_password'>>({
+    resolver: yupResolver(schema.omit(['confirm_password']))
+  })
+  const loginMutation = useMutation({
+    mutationFn: (body: Omit<IFormState, 'confirm_password'>) => login(body)
+  })
+  const onSubmit = handleSubmit((data) => {
+    loginMutation.mutate(data, {
+      onSuccess(_data) {
+        toast.success('Đăng nhập thành công')
+      },
+      onError(error) {
+        if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password'>>>(error)) {
+          const formError = error.response?.data.data
+          if (formError?.email) {
+            setError('email', {
+              message: formError.email,
+              type: 'Server'
+            })
+          }
+          if (formError?.password) {
+            setError('password', {
+              message: formError.password,
+              type: 'Server'
+            })
+          }
+        }
+      }
+    })
+  })
   return (
     <div className='bg-orange'>
       <div className='container'>
         <div className='grid grid-cols-1 lg:grid-cols-5 py-12 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form className='p-10 rounded bg-white shadow-sm'>
+            <form className='p-10 rounded bg-white shadow-sm' noValidate onSubmit={onSubmit}>
               <div className='text-2xl'>Đăng nhập</div>
-              <div className='mt-8'>
-                <input
-                  type='email'
-                  name='email'
-                  className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                  placeholder='Email'
-                />
-                <div className='mt-1 text-red-600 min-h-[1rem] text-sm'></div>
-              </div>
-              <div className='mt-3'>
-                <input
-                  type='password'
-                  name='password'
-                  className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                  placeholder='Password'
-                />
-                <div className='mt-1 text-red-600 min-h-[1rem] text-sm'></div>
-              </div>
+              <Input<Omit<IFormState, 'confirm_password'>>
+                className='mt-8'
+                type='email'
+                placeholder='Email'
+                register={register}
+                name='email'
+                errorMessage={errors.email?.message}
+              />
+
+              <Input<Omit<IFormState, 'confirm_password'>>
+                className='mt-3'
+                type='password'
+                placeholder='Password'
+                register={register}
+                name='password'
+                autoComplete='on'
+                errorMessage={errors.password?.message}
+              />
               <div className='mt-3'>
                 <button className='w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600'>
                   Đăng nhập
