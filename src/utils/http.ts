@@ -1,4 +1,7 @@
-import axios, { type AxiosInstance } from 'axios'
+import axios, { AxiosError, type AxiosInstance } from 'axios'
+import type { IResponse } from '~/types/common.type'
+import { isNotAxiosUnprocessableEntityError } from './utils'
+import { toast } from 'react-toastify'
 
 class Http {
   instance: AxiosInstance
@@ -11,6 +14,18 @@ class Http {
         Accept: 'application/json'
       }
     })
+    this.instance.interceptors.response.use(
+      function onFulfilled(response) {
+        return response
+      },
+      function onRejected(error: AxiosError<IResponse<any> | any>) {
+        if (isNotAxiosUnprocessableEntityError<IResponse<any>>(error)) {
+          const message = error.response?.data?.message || error.message
+          toast.error(message)
+        }
+        return Promise.reject(error)
+      }
+    )
   }
 }
 
