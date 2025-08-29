@@ -1,4 +1,4 @@
-import { arrow, FloatingPortal, limitShift, offset, shift, useFloating } from '@floating-ui/react'
+import { arrow, FloatingPortal, limitShift, offset, shift, useFloating, type Placement } from '@floating-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 interface IPopHoverProps {
@@ -6,20 +6,25 @@ interface IPopHoverProps {
   renderPopHover: React.ReactNode
   className?: string
   initialOpen?: boolean
+  placement?: Placement
   as?: React.ElementType
+  top?: number
 }
 export default function PopHover({
   children,
   renderPopHover,
   className,
   initialOpen,
+  placement,
+  top,
   as: Element = 'div'
 }: IPopHoverProps) {
   const arrowRef = useRef<HTMLElement>(null)
   const [isOpen, setIsOpen] = useState(initialOpen ?? false)
 
   const { refs, strategy, middlewareData, x, y } = useFloating({
-    middleware: [shift({ limiter: limitShift() }), offset(6), arrow({ element: arrowRef })]
+    placement: placement,
+    middleware: [shift({ limiter: limitShift() }), offset(top ?? 6), arrow({ element: arrowRef })]
   })
   const showPropper = () => {
     setIsOpen(true)
