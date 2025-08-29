@@ -1,47 +1,36 @@
-import { arrow, FloatingPortal, limitShift, offset, shift, useFloating } from '@floating-ui/react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useRef, useState } from 'react'
 import { Link } from 'react-router'
+import PopHover from '../PopHover'
 
 export default function Header() {
-  const arrowRef = useRef<HTMLElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
-
-  const { refs, strategy, middlewareData, x, y } = useFloating({
-    middleware: [shift({ limiter: limitShift() }), offset(6), arrow({ element: arrowRef })]
-  })
-  const showPropper = () => {
-    setIsOpen(true)
-  }
-  const hidePropper = () => {
-    setIsOpen(false)
-  }
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white'>
       <div className='container'>
         <div className='flex justify-end'>
-          <div
+          <PopHover
+            renderPopHover={
+              <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
+                <div className='flex flex-col py-2 px-3 pr-28 pl-2 text-left'>
+                  <button className='py-2 px-3 hover:text-orange text-left'>Tiếng Việt</button>
+                  <button className='py-2 px-3 hover:text-orange mt-2 text-left'>English</button>
+                </div>
+              </div>
+            }
             className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
-            ref={refs.setReference}
-            onMouseEnter={showPropper}
-            onMouseLeave={hidePropper}
           >
-            <span ref={arrowRef}>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='size-5'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418'
-                />
-              </svg>
-            </span>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='size-5'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418'
+              />
+            </svg>
             <span className='mx-1'>Tiếng Việt</span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -53,43 +42,8 @@ export default function Header() {
             >
               <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
             </svg>
-            <FloatingPortal>
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div
-                    ref={refs.setFloating}
-                    style={{
-                      position: strategy,
-                      top: y ?? 0,
-                      left: x ?? 0,
-                      width: 'max-content',
-                      transformOrigin: `${middlewareData.arrow?.x}px top`
-                    }}
-                    initial={{ opacity: 0, transform: 'scale(0)' }}
-                    animate={{ opacity: 1, transform: 'scale(1)' }}
-                    exit={{ opacity: 0, transform: 'scale(0)' }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <span
-                      ref={arrowRef}
-                      className='border-x-transparent border-t-transparent border-b-white border-[11px] absolute translate-y-[-95%] z-10'
-                      style={{
-                        left: middlewareData.arrow?.x,
-                        top: middlewareData.arrow?.y
-                      }}
-                    />
-                    <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
-                      <div className='flex flex-col py-2 px-3'>
-                        <button className='py-2 px-3 hover:text-orange'>Tiếng Việt</button>
-                        <button className='py-2 px-3 hover:text-orange mt-2'>English</button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </FloatingPortal>
-          </div>
-          <div className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'>
+          </PopHover>
+          {/* <div className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'>
             <div className='w-6 h-6 mr-2 flex-shrink-0'>
               <img
                 src='https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn'
@@ -98,7 +52,38 @@ export default function Header() {
               />
             </div>
             <div>HoangLong</div>
-          </div>
+          </div> */}
+          <PopHover
+            className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'
+            renderPopHover={
+              <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
+                <Link
+                  to='/'
+                  className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
+                >
+                  Tài khoản của tôi
+                </Link>
+                <Link
+                  to='/'
+                  className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
+                >
+                  Đơn mua
+                </Link>
+                <button className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'>
+                  Đăng xuất
+                </button>
+              </div>
+            }
+          >
+            <div className='w-6 h-6 mr-2 flex-shrink-0'>
+              <img
+                src='https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn'
+                alt='avatar'
+                className='w-full h-full object-cover rounded-full'
+              />
+            </div>
+            <div>HoangLong</div>
+          </PopHover>
         </div>
         <div className='grid grid-cols-12 gap-4 mt-4 items-center'>
           <Link to='/' className='col-span-2'>
