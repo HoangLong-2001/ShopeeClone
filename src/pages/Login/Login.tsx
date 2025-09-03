@@ -12,8 +12,8 @@ import { schema } from '~/utils/rules'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 
 export default function Login() {
-  const {setIsAuthenticated} = useContext(AppContext)
-  const navigate =  useNavigate()
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,

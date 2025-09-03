@@ -11,4 +11,3 @@ export const login = async (body: { email: string; password: string }) => {
 }
 
 export const logout = async () => await http.post('logout')
-

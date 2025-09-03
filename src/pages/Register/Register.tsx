@@ -13,8 +13,8 @@ import { AppContext } from '~/contexts/app.context'
 import { toast } from 'react-toastify'
 
 export default function Register() {
-   const {setIsAuthenticated} = useContext(AppContext)
-  const navigate =  useNavigate()
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -30,10 +30,10 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
-      onSuccess(data) {
-       toast.success('Đăng ký thành công')
-               setIsAuthenticated(true)
-               navigate('/')
+      onSuccess(_data) {
+        toast.success('Đăng ký thành công')
+        setIsAuthenticated(true)
+        navigate('/')
       },
       onError(error) {
         if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password'>>>(error)) {
