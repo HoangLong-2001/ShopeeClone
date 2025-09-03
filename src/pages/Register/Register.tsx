@@ -2,14 +2,19 @@ import { useMutation } from '@tanstack/react-query'
 import { omit } from 'lodash'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Input from '~/components/Input'
 import { schema } from '~/utils/rules'
 import type { IFormState, IResponse } from '~/types/common.type'
 import { registerAccount } from '~/apis/auth.api'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
+import { useContext } from 'react'
+import { AppContext } from '~/contexts/app.context'
+import { toast } from 'react-toastify'
 
 export default function Register() {
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -25,8 +30,10 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
-      onSuccess(data) {
-        console.log('data', data)
+      onSuccess(_data) {
+        toast.success('Đăng ký thành công')
+        setIsAuthenticated(true)
+        navigate('/')
       },
       onError(error) {
         if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password'>>>(error)) {
