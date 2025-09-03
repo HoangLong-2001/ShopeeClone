@@ -1,15 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import { login } from '~/apis/auth.api'
 import Input from '~/components/Input'
+import { AppContext } from '~/contexts/app.context'
 import type { IFormState, IResponse } from '~/types/common.type'
 import { schema } from '~/utils/rules'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 
 export default function Login() {
+  const {setIsAuthenticated} = useContext(AppContext)
+  const navigate =  useNavigate()
   const {
     register,
     handleSubmit,
@@ -26,6 +30,8 @@ export default function Login() {
     loginMutation.mutate(data, {
       onSuccess(_data) {
         toast.success('Đăng nhập thành công')
+        setIsAuthenticated(true)
+        navigate('/')
       },
       onError(error) {
         if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password'>>>(error)) {
