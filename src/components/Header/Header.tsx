@@ -6,11 +6,12 @@ import { useMutation } from '@tanstack/react-query'
 import { logout } from '~/apis/auth.api'
 
 export default function Header() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess() {
       setIsAuthenticated(false)
+      setProfile(null)
     }
   })
   const handleLogout = () => {
@@ -76,6 +77,7 @@ export default function Header() {
                   </Link>
                   <button
                     onClick={handleLogout}
+                    disabled={logoutMutation.isPending}
                     className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
                   >
                     Đăng xuất
@@ -90,7 +92,7 @@ export default function Header() {
                   className='w-full h-full object-cover rounded-full'
                 />
               </div>
-              <div>HoangLong</div>
+              <div>{profile?.email}</div>
             </PopHover>
           )}
           {!isAuthenticated && (
