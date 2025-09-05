@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import { login } from '~/apis/auth.api'
+import Button from '~/components/Button'
 import Input from '~/components/Input'
 import { AppContext } from '~/contexts/app.context'
 import type { IFormState, IResponse } from '~/types/common.type'
@@ -78,9 +79,14 @@ export default function Login() {
                 errorMessage={errors.password?.message}
               />
               <div className='mt-3'>
-                <button className='w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600'>
+                <Button
+                  type='submit'
+                  className='w-full flex items-center justify-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600'
+                  isLoading={loginMutation.isPending}
+                  disabled={loginMutation.isPending}
+                >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
               <div className='flex items-center justify-center mt-8'>
                 <span className='text-gray-400'>Bạn chưa có tài khoản?</span>

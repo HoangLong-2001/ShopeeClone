@@ -11,6 +11,7 @@ import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 import { useContext } from 'react'
 import { AppContext } from '~/contexts/app.context'
 import { toast } from 'react-toastify'
+import Button from '~/components/Button'
 
 export default function Register() {
   const { setIsAuthenticated } = useContext(AppContext)
@@ -18,7 +19,6 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    // getValues,
     setError,
     formState: { errors }
   } = useForm<IFormState>({
@@ -55,7 +55,6 @@ export default function Register() {
       }
     })
   })
-  // const rules = getRules(getValues)
   return (
     <div className='bg-orange'>
       <div className='container'>
@@ -92,9 +91,14 @@ export default function Register() {
                 errorMessage={errors.confirm_password?.message}
               />
               <div className='mt-3'>
-                <button className='w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600'>
+                <Button
+                  type='submit'
+                  className='w-full  flex items-center justify-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600'
+                  isLoading={registerMutation.isPending}
+                  disabled={registerMutation.isPending}
+                >
                   Đăng ký
-                </button>
+                </Button>
               </div>
               <div className='flex items-center justify-center mt-8'>
                 <span className='text-gray-400'>Bạn đã có tài khoản?</span>
