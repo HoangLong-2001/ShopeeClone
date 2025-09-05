@@ -25,11 +25,11 @@ export default function Input<T extends FieldValues>({
       <input
         type={type}
         autoComplete={autoComplete}
-        className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+        className='w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm'
         placeholder={placeholder}
         {...register(name, rules)}
       />
-      <div className='mt-1 text-red-600 min-h-[1rem] text-sm'>{errorMessage}</div>
+      <div className='mt-1 min-h-[1rem] text-sm text-red-600'>{errorMessage}</div>
     </div>
   )
 }
