@@ -14,7 +14,7 @@ import { toast } from 'react-toastify'
 import Button from '~/components/Button'
 
 export default function Register() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
     register,
@@ -30,9 +30,10 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
-      onSuccess(_data) {
+      onSuccess(data) {
         toast.success('Đăng ký thành công')
         setIsAuthenticated(true)
+        if (data.data?.user) setProfile(data.data?.user)
         navigate('/')
       },
       onError(error) {

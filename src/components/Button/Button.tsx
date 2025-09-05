@@ -10,7 +10,7 @@ export default function Button(props: IButtonProps) {
     'cursor-pointer': !disabled
   })
   return (
-    <button className={newClassName} disabled {...rest}>
+    <button className={newClassName} disabled={disabled} {...rest}>
       {isLoading && (
         <svg
           aria-hidden='true'

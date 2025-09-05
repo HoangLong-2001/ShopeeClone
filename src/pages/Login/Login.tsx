@@ -13,7 +13,7 @@ import { schema } from '~/utils/rules'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 
 export default function Login() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
     register,
@@ -29,8 +29,9 @@ export default function Login() {
   })
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess(_data) {
+      onSuccess(data) {
         toast.success('Đăng nhập thành công')
+        if (data.data?.user) setProfile(data.data?.user)
         setIsAuthenticated(true)
         navigate('/')
       },
