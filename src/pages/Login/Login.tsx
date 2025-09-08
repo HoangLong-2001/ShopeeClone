@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { login } from '~/apis/auth.api'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
+import PATH from '~/constants/path'
 import { AppContext } from '~/contexts/app.context'
 import type { IFormState, IResponse } from '~/types/common.type'
 import { schema } from '~/utils/rules'
@@ -91,7 +92,7 @@ export default function Login() {
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn chưa có tài khoản?</span>
-                <Link className='ml-1 text-red-400' to='/register'>
+                <Link className='ml-1 text-red-400' to={PATH.register}>
                   Đăng ký
                 </Link>
               </div>

@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { Navigate, Outlet, type RouteObject } from 'react-router'
+import PATH from '~/constants/path'
 import { AppContext } from '~/contexts/app.context'
 import LoginLayout from '~/layouts/LoginLayout/LoginLayout'
 import MainLayout from '~/layouts/MainLayout'
@@ -19,7 +20,7 @@ function RejectedRoute() {
 }
 const routes: RouteObject[] = [
   {
-    path: '/',
+    path: PATH.home,
     element: (
       <MainLayout>
         <ProductList />
@@ -31,7 +32,7 @@ const routes: RouteObject[] = [
     element: <ProtectedRoute />,
     children: [
       {
-        path: '/profile',
+        path: PATH.profile,
         element: (
           <MainLayout>
             <Profile />
@@ -45,7 +46,7 @@ const routes: RouteObject[] = [
     element: <RejectedRoute />,
     children: [
       {
-        path: '/login',
+        path: PATH.login,
         element: (
           <LoginLayout>
             <Login />
@@ -53,7 +54,7 @@ const routes: RouteObject[] = [
         )
       },
       {
-        path: '/register',
+        path: PATH.register,
         element: (
           <RegisterLayout>
             <Register />
