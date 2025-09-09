@@ -13,6 +13,7 @@ export default {
     }
   },
   plugins: [
+    require('@tailwindcss/line-clamp'),
     plugins(function ({ addComponents, theme }) {
       addComponents({
         '.container': {
