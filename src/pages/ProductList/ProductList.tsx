@@ -5,7 +5,6 @@ import SortProductList from './components/SortProductList'
 import { getProducts } from '~/apis/product.api'
 import useQueryParams from '~/hooks/useQueryParams'
 import Pagination from '~/components/Pagination'
-import { useState } from 'react'
 import type { ProductListConfig } from '~/types/product.type'
 import { isUndefined, omitBy } from 'lodash'
 export type QueryConfig = {
