@@ -7,6 +7,7 @@ import useQueryParams from '~/hooks/useQueryParams'
 import Pagination from '~/components/Pagination'
 import type { ProductListConfig } from '~/types/product.type'
 import { isUndefined, omitBy } from 'lodash'
+import { sortBy } from '~/constants/product'
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
 }
@@ -15,8 +16,8 @@ export default function ProductList() {
   const queryConfig: QueryConfig = omitBy(
     {
       page: queryParams.page || '1',
-      limit: queryParams.limit,
-      sort_by: queryParams.sort_by,
+      limit: queryParams.limit || '2',
+      sort_by: queryParams.sort_by || sortBy.createdAt,
       exclude: queryParams.exclude,
       name: queryParams.name,
       order: queryParams.order,
@@ -27,8 +28,8 @@ export default function ProductList() {
     isUndefined
   )
   const { data } = useQuery({
-    queryKey: ['products', queryParams],
-    queryFn: () => getProducts(queryParams as ProductListConfig),
+    queryKey: ['products', queryConfig],
+    queryFn: () => getProducts(queryConfig as ProductListConfig),
     keepPreviousData: true
   })
   return (
@@ -39,7 +40,7 @@ export default function ProductList() {
             <AsideFilter />
           </div>
           <div className='col-span-9'>
-            <SortProductList />
+            <SortProductList pageSize={data?.data?.pagination.page_size || 1} queryConfig={queryConfig} />
             {data?.data && (
               <>
                 <div className='mt-6 grid grid-cols-12 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
