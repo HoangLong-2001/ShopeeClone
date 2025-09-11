@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import cn from 'classnames'
 import { createSearchParams, Link } from 'react-router'
 import PATH from '~/constants/path'
 import type { QueryConfig } from '~/pages/ProductList/ProductList'
@@ -63,7 +63,7 @@ const PageButton: React.FC<{ page: number; pageSize: number; queryConfig: QueryC
             }).toString()
           }}
           key={index}
-          className={classNames('mx-2 cursor-pointer rounded bg-white px-3 py-2 shadow-sm', {
+          className={cn('mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm', {
             'border-cyan-500': pageNumber === page,
             'border-transparent': pageNumber !== page
           })}
