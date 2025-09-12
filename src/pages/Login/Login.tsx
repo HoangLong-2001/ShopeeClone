@@ -12,7 +12,8 @@ import { AppContext } from '~/contexts/app.context'
 import type { IFormState, IResponse } from '~/types/common.type'
 import { schema } from '~/utils/rules'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
-
+type FormData = Pick<IFormState, 'email' | 'password'>
+const loginSchema = schema.pick(['email', 'password'])
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
@@ -21,9 +22,10 @@ export default function Login() {
     handleSubmit,
     // getValues,
     setError,
+    trigger,
     formState: { errors }
-  } = useForm<Omit<IFormState, 'confirm_password'>>({
-    resolver: yupResolver(schema.omit(['confirm_password']))
+  } = useForm<FormData>({
+    resolver: yupResolver(loginSchema)
   })
   const loginMutation = useMutation({
     mutationFn: (body: Omit<IFormState, 'confirm_password'>) => login(body)
@@ -68,6 +70,7 @@ export default function Login() {
                 placeholder='Email'
                 register={register}
                 name='email'
+                onChange={() => trigger('email')}
                 errorMessage={errors.email?.message}
               />
 
@@ -76,6 +79,7 @@ export default function Login() {
                 type='password'
                 placeholder='Password'
                 register={register}
+                onChange={() => trigger('password')}
                 name='password'
                 autoComplete='on'
                 errorMessage={errors.password?.message}
