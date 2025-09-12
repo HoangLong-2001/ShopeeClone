@@ -14,6 +14,9 @@ import { toast } from 'react-toastify'
 import Button from '~/components/Button'
 import PATH from '~/constants/path'
 
+type FormData = Pick<IFormState, 'email' | 'password' | 'confirm_password'>
+const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
+
 export default function Register() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
@@ -21,9 +24,10 @@ export default function Register() {
     register,
     handleSubmit,
     setError,
+    trigger,
     formState: { errors }
-  } = useForm<IFormState>({
-    resolver: yupResolver(schema)
+  } = useForm<FormData>({
+    resolver: yupResolver(registerSchema)
   })
   const registerMutation = useMutation({
     mutationFn: (body: Omit<IFormState, 'confirm_password'>) => registerAccount(body)
@@ -70,6 +74,7 @@ export default function Register() {
                 placeholder='Email'
                 register={register}
                 name='email'
+                onChange={() => trigger('email')}
                 errorMessage={errors.email?.message}
               />
 
@@ -80,6 +85,7 @@ export default function Register() {
                 register={register}
                 name='password'
                 autoComplete='on'
+                onChange={() => trigger('password')}
                 errorMessage={errors.password?.message}
               />
 
@@ -90,6 +96,7 @@ export default function Register() {
                 register={register}
                 name='confirm_password'
                 autoComplete='on'
+                onChange={() => trigger('confirm_password')}
                 errorMessage={errors.confirm_password?.message}
               />
               <div className='mt-3'>

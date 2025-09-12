@@ -15,3 +15,6 @@ export interface IResponse<Data> {
   message: string
   data?: Data
 }
+export type NotUndefinedField<T> = {
+  [key in keyof T]-?: NotUndefinedField<NonNullable<T[key]>>
+}
