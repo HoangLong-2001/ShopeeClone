@@ -41,7 +41,7 @@
 - Form Management: React Hook Form
 - Router: React Router
 - Build tool: Vite
-- API: Rest API dựa trên server mình cung cấp sẵn
+- API: Rest API 
 - Hỗ trợ đa ngôn ngữ với react.i18next
 
 
