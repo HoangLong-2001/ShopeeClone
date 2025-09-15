@@ -6,6 +6,7 @@ import LoginLayout from '~/layouts/LoginLayout/LoginLayout'
 import MainLayout from '~/layouts/MainLayout'
 import RegisterLayout from '~/layouts/RegisterLayout'
 import Login from '~/pages/Login'
+import ProductDetail from '~/pages/ProductDetail/ProductDetail'
 import ProductList from '~/pages/ProductList'
 import Profile from '~/pages/Profile'
 import Register from '~/pages/Register'
@@ -24,6 +25,14 @@ const routes: RouteObject[] = [
     element: (
       <MainLayout>
         <ProductList />
+      </MainLayout>
+    )
+  },
+  {
+    path: PATH.productDetail,
+    element: (
+      <MainLayout>
+        <ProductDetail />
       </MainLayout>
     )
   },
