@@ -1,5 +1,5 @@
 import type { ProductListConfig } from '~/types/product.type'
-import type { QueryConfig } from '../../ProductList'
+import type { QueryConfig } from '~/hooks/useQueryConfig'
 import { createSearchParams, Link, useNavigate } from 'react-router'
 import PATH from '~/constants/path'
 import { omit } from 'lodash'

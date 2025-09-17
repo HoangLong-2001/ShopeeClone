@@ -1,4 +1,4 @@
-import type { QueryConfig } from '../../ProductList'
+import type { QueryConfig } from '~/hooks/useQueryConfig'
 import { createSearchParams, useNavigate } from 'react-router'
 import PATH from '~/constants/path'
 interface Props {

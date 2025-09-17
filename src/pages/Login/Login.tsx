@@ -28,7 +28,7 @@ export default function Login() {
     resolver: yupResolver(loginSchema)
   })
   const loginMutation = useMutation({
-    mutationFn: (body: Omit<IFormState, 'confirm_password'>) => login(body)
+    mutationFn: (body: Omit<IFormState, 'confirm_password' | 'name'>) => login(body)
   })
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
@@ -64,7 +64,7 @@ export default function Login() {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' noValidate onSubmit={onSubmit}>
               <div className='text-2xl'>Đăng nhập</div>
-              <Input<Omit<IFormState, 'confirm_password'>>
+              <Input<Omit<IFormState, 'confirm_password' | 'name'>>
                 className='mt-8'
                 type='email'
                 placeholder='Email'
@@ -74,7 +74,7 @@ export default function Login() {
                 errorMessage={errors.email?.message}
               />
 
-              <Input<Omit<IFormState, 'confirm_password'>>
+              <Input<Omit<IFormState, 'confirm_password' | 'name'>>
                 className='mt-3'
                 type='password'
                 placeholder='Password'

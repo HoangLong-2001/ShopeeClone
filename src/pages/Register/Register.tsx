@@ -30,7 +30,7 @@ export default function Register() {
     resolver: yupResolver(registerSchema)
   })
   const registerMutation = useMutation({
-    mutationFn: (body: Omit<IFormState, 'confirm_password'>) => registerAccount(body)
+    mutationFn: (body: Omit<IFormState, 'confirm_password' | 'name'>) => registerAccount(body)
   })
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
@@ -42,7 +42,7 @@ export default function Register() {
         navigate('/')
       },
       onError(error) {
-        if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password'>>>(error)) {
+        if (isAxiosUnprocessableEntityError<IResponse<Omit<IFormState, 'confirm_password' | 'name'>>>(error)) {
           const formError = error.response?.data.data
           console.log('error', error)
           if (formError?.email) {
@@ -68,7 +68,7 @@ export default function Register() {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-2xl'>Đăng ký</div>
-              <Input<IFormState>
+              <Input<Omit<IFormState, 'name'>>
                 className='mt-8'
                 type='email'
                 placeholder='Email'
@@ -78,7 +78,7 @@ export default function Register() {
                 errorMessage={errors.email?.message}
               />
 
-              <Input<IFormState>
+              <Input<Omit<IFormState, 'name'>>
                 className='mt-3'
                 type='password'
                 placeholder='Password'
@@ -89,7 +89,7 @@ export default function Register() {
                 errorMessage={errors.password?.message}
               />
 
-              <Input<IFormState>
+              <Input<Omit<IFormState, 'name'>>
                 className='mt-3'
                 type='password'
                 placeholder='Confirm Password'
