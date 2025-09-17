@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 import { getProduct } from '~/apis/product.api'
 import InputNumber from '~/components/InputNumber/InputNumber'
@@ -13,6 +13,7 @@ export default function ProductDetail() {
     queryKey: ['product', id],
     queryFn: () => getProduct(id as string)
   })
+  const imgRef = useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = useState<[number, number]>([0, 5])
   const [activeImage, setActiveImage] = useState('')
   const product = productData?.data
@@ -39,6 +40,23 @@ export default function ProductDetail() {
   const chooseActive = (img: string) => {
     setActiveImage(img)
   }
+  const handleZoomIn = (e: React.MouseEvent<HTMLDivElement, MouseEvent>)=>{
+    const rect = e.currentTarget.getBoundingClientRect()
+    const image = imgRef.current as HTMLImageElement
+    const {offsetX,offsetY} = e.nativeEvent
+    const {naturalHeight,naturalWidth}  = image
+   
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+    image.style.width = naturalWidth +'px',
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+  }
+  const handleZoomOut = ()=>{
+    imgRef.current?.removeAttribute('style')
+  }
   return (
     product && (
       <div className='bg-gray-200 py-6'>
@@ -46,11 +64,12 @@ export default function ProductDetail() {
           <div className='bg-white p-4 shadow'>
             <div className='grid grid-cols-12 gap-9'>
               <div className='col-span-5'>
-                <div className='relative w-full pt-[100%] shadow'>
+                <div className='relative w-full pt-[100%] overflow-hidden cursor-zoom-in shadow' onMouseMove={handleZoomIn} onMouseLeave={handleZoomOut}>
                   <img
+                  ref={imgRef}
                     src={activeImage}
                     alt={product.name}
-                    className='absolute left-0 top-0 h-full w-full bg-white object-cover'
+                    className='absolute pointer-events-none left-0 top-0 h-full w-full bg-white object-cover'
                   />
                 </div>
                 <div className='relative mt-4 grid grid-cols-5 gap-1'>
