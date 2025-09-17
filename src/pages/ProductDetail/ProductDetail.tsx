@@ -5,10 +5,11 @@ import { useParams } from 'react-router'
 import { getProduct } from '~/apis/product.api'
 import InputNumber from '~/components/InputNumber/InputNumber'
 import Rating from '~/components/Ranting'
-import { formatCurrency, formatNumberToSocialStyle, rateSale } from '~/utils/utils'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '~/utils/utils'
 
 export default function ProductDetail() {
-  const { id } = useParams()
+  const { nameId } = useParams()
+  const id = getIdFromNameId(nameId as string)
   const { data: productData } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProduct(id as string)
