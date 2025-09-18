@@ -2,10 +2,12 @@ import { useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router'
-import { getProduct } from '~/apis/product.api'
+import { getProduct, getProducts } from '~/apis/product.api'
 import InputNumber from '~/components/InputNumber/InputNumber'
 import Rating from '~/components/Ranting'
+import type { ProductListConfig } from '~/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '~/utils/utils'
+import Product from '../ProductList/components/Product'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
@@ -14,6 +16,7 @@ export default function ProductDetail() {
     queryKey: ['product', id],
     queryFn: () => getProduct(id as string)
   })
+  const queryConfig: ProductListConfig = { limit: '20', page: '1', category: productData?.data?.category._id }
   const imgRef = useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = useState<[number, number]>([0, 5])
   const [activeImage, setActiveImage] = useState('')
@@ -22,7 +25,12 @@ export default function ProductDetail() {
     () => (product ? product.images.slice(...currentIndexImages) : []),
     [product, currentIndexImages]
   )
-
+  const { data: productList } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => getProducts(queryConfig as ProductListConfig),
+    enabled: Boolean(productData),
+    staleTime: Infinity
+  })
   useEffect(() => {
     if (product && product.images.length > 0) setActiveImage(product.images[0])
   }, [product])
@@ -202,6 +210,20 @@ export default function ProductDetail() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className='mt-8'>
+          <div className='container'>
+            <h1 className='uppercase text-gray-400'>có thể bạn cũng thích</h1>
+            {productList?.data && (
+              <div className='mt-6 grid grid-cols-12 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+                {productList.data.products.map((product) => (
+                  <div className='col-span-1' key={product._id}>
+                    <Product product={product} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
