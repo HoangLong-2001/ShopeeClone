@@ -6,12 +6,13 @@ import type { QueryConfig } from '~/hooks/useQueryConfig'
 import classNames from 'classnames'
 import { Controller, useForm } from 'react-hook-form'
 import type { IFormState, NotUndefinedField } from '~/types/common.type'
-import InputNumber from '~/components/InputNumber/InputNumber'
+
 import { schema } from '~/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import type { AnyObject, ObjectSchema } from 'yup'
 import { omit } from 'lodash'
 import RatingStar from '../RatingStar'
+import InputNumber from '~/components/InputNumber'
 interface Props {
   categories: Category[]
   queryConfig: QueryConfig
