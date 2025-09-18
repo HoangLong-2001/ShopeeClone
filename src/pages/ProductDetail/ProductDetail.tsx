@@ -189,11 +189,47 @@ export default function ProductDetail() {
                         <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
                       </svg>
                     </button>
-                    <span className='ml-2'>Thêm vào giỏ hàng</span>
-                    <button className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
-                      Mua ngay
-                    </button>
+                    <span className='ml-10 text-gray-400'>{product.quantity} sản phẩm</span>
                   </div>
+                </div>
+                <div className='mt-10 flex items-center'>
+                  <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'>
+                    <svg
+                      enableBackground='new 0 0 15 15'
+                      viewBox='0 0 15 15'
+                      x={0}
+                      y={0}
+                      className='mr-[10px] h-5 w-5 fill-current stroke-orange text-orange'
+                    >
+                      <g>
+                        <g>
+                          <polyline
+                            fill='none'
+                            points='.5 .5 2.7 .5 5.2 11 12.4 11 14.5 3.5 3.7 3.5'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeMiterlimit={10}
+                          />
+                          <circle cx={6} cy='13.5' r={1} stroke='none' />
+                          <circle cx='11.5' cy='13.5' r={1} stroke='none' />
+                        </g>
+                        <line
+                          fill='none'
+                          strokeLinecap='round'
+                          strokeMiterlimit={10}
+                          x1='7.5'
+                          x2='10.5'
+                          y1={7}
+                          y2={7}
+                        />
+                        <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
+                      </g>
+                    </svg>
+                    Thêm vào giỏ hàng
+                  </button>
+                  <button className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                    Mua ngay
+                  </button>
                 </div>
               </div>
             </div>{' '}
