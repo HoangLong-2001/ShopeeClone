@@ -163,7 +163,8 @@ export default function ProductDetail() {
                       nonActiveClassname='fill-gray-300 text-gray-300 h-4 w-4'
                     />
                   </div>
-                  <div className='mx-4 h-4 w-[1px] bg-gray-300'>
+                  <div className='mx-4 h-4 w-[1px] bg-gray-300'/>
+                  <div>
                     <span>{formatNumberToSocialStyle(product.sold)}</span>
                     <span className='ml-1 text-gray-500'>Đã bán</span>
                   </div>
