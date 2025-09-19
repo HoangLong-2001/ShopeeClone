@@ -15,7 +15,8 @@ export default function ProductDetail() {
   const id = getIdFromNameId(nameId as string)
   const { data: productData } = useQuery({
     queryKey: ['product', id],
-    queryFn: () => getProduct(id as string)
+    queryFn: () => getProduct(id as string),
+    staleTime: 3 * 60 * 1000
   })
   const queryConfig: ProductListConfig = { limit: '20', page: '1', category: productData?.data?.category._id }
   const imgRef = useRef<HTMLImageElement>(null)
