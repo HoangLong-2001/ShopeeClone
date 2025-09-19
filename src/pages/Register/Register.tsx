@@ -24,7 +24,6 @@ export default function Register() {
     register,
     handleSubmit,
     setError,
-    trigger,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(registerSchema)
@@ -74,7 +73,6 @@ export default function Register() {
                 placeholder='Email'
                 register={register}
                 name='email'
-                onChange={() => trigger('email')}
                 errorMessage={errors.email?.message}
               />
 
@@ -85,7 +83,6 @@ export default function Register() {
                 register={register}
                 name='password'
                 autoComplete='on'
-                onChange={() => trigger('password')}
                 errorMessage={errors.password?.message}
               />
 
@@ -96,7 +93,6 @@ export default function Register() {
                 register={register}
                 name='confirm_password'
                 autoComplete='on'
-                onChange={() => trigger('confirm_password')}
                 errorMessage={errors.confirm_password?.message}
               />
               <div className='mt-3'>

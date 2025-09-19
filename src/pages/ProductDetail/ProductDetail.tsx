@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router'
@@ -8,6 +8,9 @@ import type { ProductListConfig } from '~/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '~/utils/utils'
 import Product from '../ProductList/components/Product'
 import QuantityController from '~/components/QuantityController'
+import { addToCart } from '~/apis/purchase.api'
+import { toast } from 'react-toastify'
+import { purchaseStatus } from '~/constants/purchase'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
@@ -18,6 +21,7 @@ export default function ProductDetail() {
     queryFn: () => getProduct(id as string),
     staleTime: 3 * 60 * 1000
   })
+  const queryClient = useQueryClient()
   const queryConfig: ProductListConfig = { limit: '20', page: '1', category: productData?.data?.category._id }
   const imgRef = useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = useState<[number, number]>([0, 5])
@@ -27,6 +31,7 @@ export default function ProductDetail() {
     () => (product ? product.images.slice(...currentIndexImages) : []),
     [product, currentIndexImages]
   )
+  const addToCartMutation = useMutation(addToCart)
   const { data: productList } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => getProducts(queryConfig as ProductListConfig),
@@ -66,6 +71,17 @@ export default function ProductDetail() {
   }
   const handleZoomOut = () => {
     imgRef.current?.removeAttribute('style')
+  }
+  const handleAddToCart = () => {
+    addToCartMutation.mutate(
+      { product_id: product?._id as string, buy_count: quantity },
+      {
+        onSuccess(data) {
+          toast.success(data.message, { autoClose: 1000 })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchaseStatus.inCart }] })
+        }
+      }
+    )
   }
   return (
     product && (
@@ -171,7 +187,10 @@ export default function ProductDetail() {
                   <span className='ml-10 text-gray-400'>{product.quantity} sản phẩm</span>
                 </div>
                 <div className='mt-10 flex items-center'>
-                  <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'>
+                  <button
+                    className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'
+                    onClick={handleAddToCart}
+                  >
                     <svg
                       enableBackground='new 0 0 15 15'
                       viewBox='0 0 15 15'

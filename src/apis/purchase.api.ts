@@ -9,7 +9,7 @@ export const addToCart = async (body: { product_id: string; buy_count: number })
   return response.data
 }
 export const getPurchases = async (params: { status: PurchaseListStatus }) => {
-  const response = await http.get(URL, {
+  const response = await http.get<IResponse<Purchase[]>>(URL, {
     params
   })
   return response.data

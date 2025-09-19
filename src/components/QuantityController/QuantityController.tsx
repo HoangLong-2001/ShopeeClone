@@ -31,7 +31,7 @@ export default function QuantityController({
   }
   const decrease = () => {
     let _value = Number(value) - 1
-    if (_value < 1) {
+    if (_value < 0) {
       _value = 1
     }
     onDecrease?.(_value)
@@ -40,7 +40,7 @@ export default function QuantityController({
     <div className={'flex items-center' + classNameWrapper}>
       <button
         className='rounded-1-sm flex h-8 w-8 items-center justify-center border border-gray-300 text-gray-600'
-        onClick={increase}
+        onClick={decrease}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -62,7 +62,7 @@ export default function QuantityController({
       />
       <button
         className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'
-        onClick={decrease}
+        onClick={increase}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'

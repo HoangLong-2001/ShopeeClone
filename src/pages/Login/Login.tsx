@@ -22,7 +22,7 @@ export default function Login() {
     handleSubmit,
     // getValues,
     setError,
-    trigger,
+
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(loginSchema)
@@ -70,7 +70,6 @@ export default function Login() {
                 placeholder='Email'
                 register={register}
                 name='email'
-                onChange={() => trigger('email')}
                 errorMessage={errors.email?.message}
               />
 
@@ -79,7 +78,6 @@ export default function Login() {
                 type='password'
                 placeholder='Password'
                 register={register}
-                onChange={() => trigger('password')}
                 name='password'
                 autoComplete='on'
                 errorMessage={errors.password?.message}
