@@ -1,4 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router'
+import { getProduct } from '~/apis/product.api'
 import Rating from '~/components/Ranting'
 import PATH from '~/constants/path'
 import type { Product as ProductType } from '~/types/product.type'
@@ -7,8 +9,16 @@ interface IProductProps {
   product: ProductType
 }
 export default function Product({ product }: IProductProps) {
+  const queryClient = useQueryClient()
+  const handlePreFetch = () => {
+    queryClient.prefetchQuery({
+      queryKey: ['product', product._id],
+      queryFn: () => getProduct(product._id),
+      staleTime: 3 * 60 * 1000
+    })
+  }
   return (
-    <Link to={`${PATH.home}${generateNameId({ name: product.name, id: product._id })}`}>
+    <Link to={`${PATH.home}${generateNameId({ name: product.name, id: product._id })}`} onMouseEnter={handlePreFetch}>
       <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'>
         <div className='relative w-full pt-[100%]'>
           <img
