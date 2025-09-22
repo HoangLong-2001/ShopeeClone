@@ -1,10 +1,13 @@
 import type { InputHTMLAttributes } from 'react'
-import type { FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form'
+import type { FieldPath, FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form'
 
-interface IInputProps<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
-  register?: UseFormRegister<T>
-  rules?: RegisterOptions<T>
-  name?: any
+interface IInputProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> extends InputHTMLAttributes<HTMLInputElement> {
+  register?: UseFormRegister<TFieldValues>
+  rules?: RegisterOptions<TFieldValues>
+  name?: TName
   errorMessage?: string
   classNameInput?: string
   classNameError?: string

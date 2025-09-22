@@ -12,7 +12,7 @@ function App() {
       behavior: 'smooth' // hoặc "auto"
     })
   }, [pathname, search])
-  
+
   return (
     <div>
       {element} <ToastContainer />

@@ -64,7 +64,7 @@ export default function Login() {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' noValidate onSubmit={onSubmit}>
               <div className='text-2xl'>Đăng nhập</div>
-              <Input<Omit<IFormState, 'confirm_password' | 'name'>>
+              <Input
                 className='mt-8'
                 type='email'
                 placeholder='Email'
@@ -73,7 +73,7 @@ export default function Login() {
                 errorMessage={errors.email?.message}
               />
 
-              <Input<Omit<IFormState, 'confirm_password' | 'name'>>
+              <Input
                 className='mt-3'
                 type='password'
                 placeholder='Password'

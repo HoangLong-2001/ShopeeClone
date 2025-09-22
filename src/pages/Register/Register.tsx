@@ -67,7 +67,7 @@ export default function Register() {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-2xl'>Đăng ký</div>
-              <Input<Omit<IFormState, 'name'>>
+              <Input
                 className='mt-8'
                 type='email'
                 placeholder='Email'
@@ -76,7 +76,7 @@ export default function Register() {
                 errorMessage={errors.email?.message}
               />
 
-              <Input<Omit<IFormState, 'name'>>
+              <Input
                 className='mt-3'
                 type='password'
                 placeholder='Password'
@@ -86,7 +86,7 @@ export default function Register() {
                 errorMessage={errors.password?.message}
               />
 
-              <Input<Omit<IFormState, 'name'>>
+              <Input
                 className='mt-3'
                 type='password'
                 placeholder='Confirm Password'
