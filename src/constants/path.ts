@@ -5,7 +5,7 @@ const PATH = {
   register: '/register',
   logout: '/logout',
   productDetail: ':nameId',
-  cart:'/cart'
+  cart: '/cart'
 }
 
 export default PATH

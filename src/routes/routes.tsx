@@ -48,11 +48,12 @@ const routes: RouteObject[] = [
             <Profile />
           </MainLayout>
         )
-      },{
+      },
+      {
         path: PATH.cart,
         element: (
           <MainLayout>
-            <Cart/>
+            <Cart />
           </MainLayout>
         )
       }
