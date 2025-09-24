@@ -14,7 +14,7 @@ import { omit } from 'lodash'
 import { purchaseStatus } from '~/constants/purchase'
 import { getPurchases } from '~/apis/purchase.api'
 import noPurchase from '~/assets/images/no-purchase.png'
-import { formatCurrency } from '~/utils/utils'
+import { formatCurrency, generateNameId } from '~/utils/utils'
 type FormData = Pick<IFormState, 'name'>
 const nameSchema = schema.pick(['name'])
 const MAX_PURCHASES = 5
@@ -202,11 +202,18 @@ export default function Header() {
             renderPopHover={
               <div className='max-w-[400px] border border-gray-200 bg-white shadow-sm'>
                 {cartData?.data && cartData?.data?.length > 0 ? (
-                  <div className='py-2'>
+                  <div className='px-2 py-2'>
                     <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
                     <div className='mt-5'>
                       {cartData.data.slice(0, MAX_PURCHASES).map((item) => (
-                        <div className='mt-4 flex cursor-pointer items-center p-2 hover:bg-gray-200' key={item._id}>
+                        <Link
+                          to={`${PATH.home}${generateNameId({
+                            name: item.product.name,
+                            id: item.product._id
+                          })}`}
+                          className='mt-4 flex cursor-pointer items-center p-2 hover:bg-gray-200'
+                          key={item._id}
+                        >
                           <div className='flex-shrink-0'>
                             <img src={item.product.image} alt={item.product.name} className='h-11 w-11 object-cover' />
                           </div>
@@ -216,7 +223,7 @@ export default function Header() {
                           <div className='ml-2 flex-shrink-0'>
                             <div className='text-orange'>₫{formatCurrency(item.product.price)}</div>
                           </div>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                     <div className='mt-6 flex items-center justify-between'>
@@ -224,9 +231,12 @@ export default function Header() {
                         {cartData.data.length > MAX_PURCHASES ? cartData.data.length - MAX_PURCHASES : ''} Thêm hàng vào
                         giỏ
                       </div>
-                      <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
+                      <Link
+                        to={PATH.cart}
+                        className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
+                      >
                         Xem giỏ hàng
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 ) : (
@@ -238,7 +248,7 @@ export default function Header() {
               </div>
             }
           >
-            <Link to={PATH.home} className='relative'>
+            <Link to={PATH.cart} className='relative'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
