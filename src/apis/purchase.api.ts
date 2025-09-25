@@ -19,7 +19,7 @@ export const updatePurchase = async (body: { product_id: string; buy_count: numb
   return response.data
 }
 
-export const byProducts = async (body: { product_id: string; buy_count: number }[]) => {
+export const buyProducts = async (body: { product_id: string; buy_count: number }[]) => {
   const response = await http.post<IResponse<Purchase[]>>(`${URL}/buy-products`, body)
   return response.data
 }
