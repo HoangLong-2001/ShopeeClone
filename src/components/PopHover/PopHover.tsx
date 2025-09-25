@@ -41,6 +41,7 @@ export default function PopHover({
             <motion.div
               ref={refs.setFloating}
               style={{
+                zIndex: 1000,
                 position: strategy,
                 top: y ?? 0,
                 left: x ?? 0,
