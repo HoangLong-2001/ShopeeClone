@@ -2,16 +2,20 @@ import { useState } from 'react'
 import InputNumber, { type InputNumberProps } from '../InputNumber'
 interface IProps extends InputNumberProps {
   max?: number
+  min?: number
   onIncrease?: (value: number) => void
   onDecrease?: (value: number) => void
   onType?: (value: number) => void
+  onFocusOut?: (value: number) => void
   classNameWrapper?: string
 }
 export default function QuantityController({
   max,
+  min = 0,
   onIncrease,
   onDecrease,
   onType,
+  onFocusOut,
   value,
   classNameWrapper = 'ml-10',
   ...rest
@@ -21,6 +25,8 @@ export default function QuantityController({
     let _value: number = Number(e.target.value)
     if (max && max < _value) {
       _value = max
+    } else if (min && _value <= min) {
+      _value = min
     }
     onType?.(_value)
     setLocalValue(_value)
@@ -35,11 +41,14 @@ export default function QuantityController({
   }
   const decrease = () => {
     let _value = Number(value || localValue) - 1
-    if (_value < 0) {
-      _value = 1
+    if (_value < min) {
+      _value = min
     }
     onDecrease?.(_value)
     setLocalValue(_value)
+  }
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    onFocusOut?.(Number(e.target.value))
   }
   return (
     <div className={'flex items-center' + classNameWrapper}>
@@ -61,6 +70,7 @@ export default function QuantityController({
       <InputNumber
         value={value || localValue}
         classNameError='hidden'
+        onBlur={handleBlur}
         onChange={handleChange}
         classNameInput='h-8 w-14 border-b border-gray-300 border-t text-center p-1 outline-none'
         {...rest}
