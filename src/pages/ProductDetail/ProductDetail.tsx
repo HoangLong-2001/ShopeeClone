@@ -181,8 +181,11 @@ export default function ProductDetail() {
                   <QuantityController
                     value={quantity}
                     onIncrease={(value) => setQuantity(value)}
+                    min={1}
                     max={product.quantity}
-                    onDecrease={(value) => setQuantity(value)}
+                    onDecrease={(value) => {
+                      setQuantity(value)
+                    }}
                     onType={(value) => setQuantity(value)}
                   />
                   <span className='ml-10 text-gray-400'>{product.quantity} sản phẩm</span>

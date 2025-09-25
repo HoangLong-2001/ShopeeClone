@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
-import { getPurchases } from '~/apis/purchase.api'
+import { getPurchases, updatePurchase } from '~/apis/purchase.api'
 import Button from '~/components/Button'
 import QuantityController from '~/components/QuantityController'
 import PATH from '~/constants/path'
@@ -9,26 +9,39 @@ import { purchaseStatus } from '~/constants/purchase'
 import type { Purchase } from '~/types/purchase.type'
 import { formatCurrency, generateNameId } from '~/utils/utils'
 import { produce } from 'immer'
+import { keyBy } from 'lodash'
 interface ExtraPurchase extends Purchase {
   disable: boolean
   checked: boolean
+  quantity: number
 }
 export default function Cart() {
   const [extraPurchase, setExtraPurchase] = useState<ExtraPurchase[]>([])
-  const { data: purchasesInCartData } = useQuery({
+
+  const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: purchaseStatus.inCart }],
     queryFn: () => getPurchases({ status: purchaseStatus.inCart })
   })
   const purchasesInCart = purchasesInCartData?.data
+  const updatePurchaseMutation = useMutation({
+    mutationFn: updatePurchase,
+    onSuccess: () => {
+      refetch()
+    }
+  })
   const isAllChecked = useMemo(() => extraPurchase.every((purchase) => purchase.checked), [extraPurchase])
   useEffect(() => {
-    setExtraPurchase(
-      purchasesInCart?.map((purchase) => ({
-        ...purchase,
-        disable: false,
-        checked: false
-      })) || []
-    )
+    setExtraPurchase((prev) => {
+      const extendedPurchasesObject = keyBy(prev, '_id')
+      return (
+        purchasesInCart?.map((purchase) => ({
+          ...purchase,
+          disable: false,
+          checked: Boolean(extendedPurchasesObject[purchase._id]?.checked),
+          quantity: purchase.buy_count
+        })) || []
+      )
+    })
   }, [purchasesInCart])
   const handleCheck = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setExtraPurchase(
@@ -44,6 +57,25 @@ export default function Cart() {
         checked: !isAllChecked
       }))
     )
+  }
+  const handleTypeQuantity = (purchaseIndex: number) => (value: number) => {
+    setExtraPurchase(
+      produce((draft) => {
+        draft[purchaseIndex].buy_count = value
+        draft[purchaseIndex].quantity = value
+      })
+    )
+  }
+  const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
+    if (enable) {
+      setExtraPurchase(
+        produce((draft) => {
+          draft[purchaseIndex].disable = true
+          draft[purchaseIndex].quantity = value
+        })
+      )
+      updatePurchaseMutation.mutate({ product_id: extraPurchase[purchaseIndex].product._id, buy_count: value })
+    }
   }
   return (
     <div className='bg-neutral-100 py-16'>
@@ -128,13 +160,26 @@ export default function Cart() {
                       <div className='col-span-1'>
                         <QuantityController
                           max={purchase.product.quantity}
-                          value={purchase.buy_count}
+                          value={purchase.quantity}
+                          min={1}
                           classNameWrapper='flex items-center'
+                          onType={handleTypeQuantity(index)}
+                          onFocusOut={(value) =>
+                            handleQuantity(
+                              index,
+                              value,
+                              value <= purchase.product.quantity &&
+                                value >= 1 &&
+                                value !== (purchasesInCart as Purchase[])[index].buy_count
+                            )
+                          }
+                          onIncrease={(value) => handleQuantity(index, value, value <= purchase.product.quantity)}
+                          onDecrease={(value) => handleQuantity(index, value, value >= 1)}
                         />
                       </div>
                       <div className='col-span-1'>
                         <span className='text-orange'>
-                          ₫{formatCurrency(purchase.product.price * purchase.buy_count)}
+                          ₫{formatCurrency(purchase.product.price * purchase.quantity)}
                         </span>
                       </div>
                       <div className='col-span-1'>
