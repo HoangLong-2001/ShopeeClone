@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react'
 import type { User } from '~/types/user.type'
-import { getAccessTokenFromLS } from '~/utils/auth'
+import { getAccessTokenFromLS, getProfileFromLS } from '~/utils/auth'
 
 interface IAppContext {
   isAuthenticated: boolean
@@ -14,7 +14,7 @@ const initialAppContext: IAppContext = {
     return null
   },
   setProfile: () => null,
-  profile: null
+  profile: getProfileFromLS()
 }
 export const AppContext = createContext<IAppContext>(initialAppContext)
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
