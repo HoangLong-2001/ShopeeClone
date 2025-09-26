@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { getProduct, getProducts } from '~/apis/product.api'
 import Rating from '~/components/Ranting'
 import type { ProductListConfig } from '~/types/product.type'
@@ -11,6 +11,7 @@ import QuantityController from '~/components/QuantityController'
 import { addToCart } from '~/apis/purchase.api'
 import { toast } from 'react-toastify'
 import { purchaseStatus } from '~/constants/purchase'
+import PATH from '~/constants/path'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
@@ -26,6 +27,7 @@ export default function ProductDetail() {
   const imgRef = useRef<HTMLImageElement>(null)
   const [currentIndexImages, setCurrentIndexImages] = useState<[number, number]>([0, 5])
   const [activeImage, setActiveImage] = useState('')
+  const navigate = useNavigate()
   const product = productData?.data
   const currentImages = useMemo(
     () => (product ? product.images.slice(...currentIndexImages) : []),
@@ -82,6 +84,15 @@ export default function ProductDetail() {
         }
       }
     )
+  }
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: quantity })
+    if (res.data) {
+      const purchaseId = res.data._id
+      navigate(PATH.cart, {
+        state: { purchaseId }
+      })
+    }
   }
   return (
     product && (
@@ -228,7 +239,10 @@ export default function ProductDetail() {
                     </svg>
                     Thêm vào giỏ hàng
                   </button>
-                  <button className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                  <button
+                    onClick={buyNow}
+                    className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                  >
                     Mua ngay
                   </button>
                 </div>
