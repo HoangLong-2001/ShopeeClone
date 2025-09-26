@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { Navigate, Outlet, type RouteObject } from 'react-router'
 import PATH from '~/constants/path'
 import { AppContext } from '~/contexts/app.context'
+import CartLayout from '~/layouts/CartLayout'
 import LoginLayout from '~/layouts/LoginLayout/LoginLayout'
 import MainLayout from '~/layouts/MainLayout'
 import RegisterLayout from '~/layouts/RegisterLayout'
@@ -52,9 +53,9 @@ const routes: RouteObject[] = [
       {
         path: PATH.cart,
         element: (
-          <MainLayout>
+          <CartLayout>
             <Cart />
-          </MainLayout>
+          </CartLayout>
         )
       }
     ]
