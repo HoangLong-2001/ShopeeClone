@@ -33,8 +33,8 @@ export default function Login() {
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
       onSuccess(data) {
-        toast.success('Đăng nhập thành công',{
-          autoClose:1000
+        toast.success('Đăng nhập thành công', {
+          autoClose: 1000
         })
         if (data.data?.user) setProfile(data.data?.user)
         setIsAuthenticated(true)

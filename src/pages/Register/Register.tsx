@@ -35,8 +35,8 @@ export default function Register() {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
       onSuccess(data) {
-        toast.success('Đăng ký thành công',{
-          autoClose:1000
+        toast.success('Đăng ký thành công', {
+          autoClose: 1000
         })
         setIsAuthenticated(true)
         if (data.data?.user) setProfile(data.data?.user)
