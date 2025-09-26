@@ -1,9 +1,5 @@
-import type { RegisterOptions } from 'react-hook-form'
-import type { IFormState } from '~/types/common'
+import type { FORM_VALIDATE_TYPE } from '~/types/common.type'
 
-type FORM_VALIDATE_TYPE = {
-  [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions<IFormState>
-}
 export const FORM_VALIDATE: FORM_VALIDATE_TYPE = {
   email: {
     required: {
