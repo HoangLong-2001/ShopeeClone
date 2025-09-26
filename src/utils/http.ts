@@ -4,6 +4,7 @@ import { isNotAxiosUnprocessableEntityError } from './utils'
 import { toast } from 'react-toastify'
 import { clearFromLS, getAccessTokenFromLS, saveAccessTokenToLS, saveProfileToLS } from './auth'
 import type { AuthResponse } from '~/types/auth.type'
+import { BASE_URL } from '~/constants/env'
 
 class Http {
   instance: AxiosInstance
@@ -11,7 +12,7 @@ class Http {
   constructor() {
     this.accessToken = getAccessTokenFromLS()
     this.instance = axios.create({
-      baseURL: 'https://api-ecom.duthanhduoc.com/',
+      baseURL: BASE_URL,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
