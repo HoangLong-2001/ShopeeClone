@@ -10,6 +10,7 @@ interface IAppContext {
   setProfile: React.Dispatch<React.SetStateAction<User | null>>
   extraPurchase: ExtraPurchase[]
   setExtraPurchase: React.Dispatch<React.SetStateAction<ExtraPurchase[]>>
+  reset: () => void
 }
 const initialAppContext: IAppContext = {
   isAuthenticated: Boolean(getAccessTokenFromLS()),
@@ -19,16 +20,22 @@ const initialAppContext: IAppContext = {
   setProfile: () => null,
   profile: getProfileFromLS(),
   extraPurchase: [],
-  setExtraPurchase: () => null
+  setExtraPurchase: () => null,
+  reset: () => {}
 }
 export const AppContext = createContext<IAppContext>(initialAppContext)
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
   const [profile, setProfile] = useState<User | null>(initialAppContext.profile)
   const [extraPurchase, setExtraPurchase] = useState<ExtraPurchase[]>(initialAppContext.extraPurchase)
+  const reset = () => {
+    setIsAuthenticated(false)
+    setExtraPurchase([])
+    setProfile(null)
+  }
   return (
     <AppContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, profile, setProfile, extraPurchase, setExtraPurchase }}
+      value={{ isAuthenticated, setIsAuthenticated, profile, setProfile, extraPurchase, setExtraPurchase, reset }}
     >
       {children}
     </AppContext.Provider>
