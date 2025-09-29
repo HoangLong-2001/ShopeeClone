@@ -1,4 +1,4 @@
-import axios, { AxiosError, type AxiosInstance } from 'axios'
+import axios, { AxiosError, HttpStatusCode, type AxiosInstance } from 'axios'
 import type { IResponse } from '~/types/common.type'
 import { isNotAxiosUnprocessableEntityError } from './utils'
 import { toast } from 'react-toastify'
@@ -50,6 +50,9 @@ class Http {
         if (isNotAxiosUnprocessableEntityError<IResponse<any>>(error)) {
           const message = error.response?.data?.message || error.message
           toast.error(message)
+        }
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          clearFromLS()
         }
         return Promise.reject(error)
       }
