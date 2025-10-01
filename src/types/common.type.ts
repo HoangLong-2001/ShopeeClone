@@ -1,6 +1,6 @@
 import yup from 'yup'
 import type { RegisterOptions } from 'react-hook-form'
-import type { schema } from '~/utils/rules'
+import type { schema, userSchema } from '~/utils/rules'
 
 // export declare interface IFormState {
 //   email: string
@@ -15,6 +15,7 @@ export interface IResponse<Data> {
   message: string
   data?: Data
 }
+export type UserFormState = yup.InferType<typeof userSchema>
 export type NotUndefinedField<T> = {
   [key in keyof T]-?: NotUndefinedField<NonNullable<T[key]>>
 }
