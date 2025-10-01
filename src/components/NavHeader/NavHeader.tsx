@@ -6,7 +6,7 @@ import { Link } from 'react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { logout } from '~/apis/auth.api'
 import { purchaseStatus } from '~/constants/purchase'
-
+import nonAva from '~/assets/react.svg'
 export default function NavHeader() {
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
   const queryClient = useQueryClient()
@@ -88,11 +88,7 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
-            <img
-              src='https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn'
-              alt='avatar'
-              className='h-full w-full rounded-full object-cover'
-            />
+            <img src={profile?.avatar || nonAva} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
           <div>{profile?.email}</div>
         </PopHover>
