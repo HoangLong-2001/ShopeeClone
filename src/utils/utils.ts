@@ -1,6 +1,7 @@
 import type { AxiosError } from 'axios'
 import axios, { HttpStatusCode } from 'axios'
-
+import { BASE_URL } from '~/constants/env'
+import userImage from '~/assets/images/no-purchase.png'
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   return axios.isAxiosError(error)
 }
@@ -33,3 +34,4 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-i-')
   return arr[arr.length - 1]
 }
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${BASE_URL}images/${avatarName}` : userImage)

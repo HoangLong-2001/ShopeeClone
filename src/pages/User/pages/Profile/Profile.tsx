@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm, type Resolver } from 'react-hook-form'
-import { getProfile, updateProfile } from '~/apis/user.api'
+import { getProfile, updateProfile, uploadAvatar } from '~/apis/user.api'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import type { UserFormState, IResponse } from '~/types/common.type'
@@ -12,18 +12,26 @@ import { toast } from 'react-toastify'
 import { saveProfileToLS } from '~/utils/auth'
 import DateSelect from '../../components/DateSelect'
 import type { User } from '~/types/user.type'
+import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 type FormData = Pick<UserFormState, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
+type FormDataError = Omit<FormData, 'date_of_birth'> & { date_of_birth: string }
 const profileSchema = userSchema.pick(['address', 'avatar', 'date_of_birth', 'name', 'phone'])
 
 export default function Profile() {
   const { setProfile } = useContext(AppContext)
+  const [file, setFile] = useState<File>()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const previewImage = useMemo(() => {
+    return file ? URL.createObjectURL(file) : ''
+  }, [file])
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-    setValue
-    // setError
+    setValue,
+    watch,
+    setError
   } = useForm<FormData>({
     resolver: yupResolver(profileSchema) as Resolver<FormData, any, FormData>,
     defaultValues: {
@@ -34,11 +42,13 @@ export default function Profile() {
       date_of_birth: new Date(1990, 0, 1)
     }
   })
+  const avatar = watch('avatar')
   const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile
   })
   const updateProfileMutation = useMutation(updateProfile)
+  const uploadAvatarMutation = useMutation(uploadAvatar)
   const profile = profileData?.data
   useEffect(() => {
     if (profile) {
@@ -51,19 +61,49 @@ export default function Profile() {
   }, [profile, setValue])
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const res = await updateProfileMutation.mutateAsync(data)
+      let avatarName = avatar
+      if (file) {
+        const form = new FormData()
+        form.append('image', file)
+        const uploadRes = await uploadAvatarMutation.mutateAsync(form)
+        avatarName = uploadRes.data.data
+        setValue('avatar', avatarName)
+      }
+      const res = await updateProfileMutation.mutateAsync({
+        ...data,
+        date_of_birth: data.date_of_birth?.toISOString(),
+        avatar: avatarName
+      })
       setProfile(res.data as User)
       saveProfileToLS(res.data as User)
       refetch()
       toast.success(res.message, {
         autoClose: 1000
       })
-    } catch (error: IResponse<User> | any) {
-      toast.error((error as IResponse<User>).message, {
-        autoClose: 1000
-      })
+    } catch (error) {
+      if (isAxiosUnprocessableEntityError<IResponse<FormDataError>>(error)) {
+        const formError = error.response?.data.data
+        if (formError) {
+          Object.keys(formError).forEach((key) => {
+            setError(key as keyof FormDataError, {
+              message: formError[key as keyof FormDataError],
+              type: 'Server'
+            })
+          })
+        }
+        toast.error(error.message, {
+          autoClose: 1000
+        })
+      }
     }
   })
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileFromLocal = event.target.files?.[0]
+    setFile(fileFromLocal)
+  }
+  const handleUpload = () => {
+    fileInputRef.current?.click()
+  }
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
       <div className='border-b border-b-gray-200 py-6'>
@@ -135,14 +175,11 @@ export default function Profile() {
         <div className='flex justify-center md:w-72 md:border-l md:border-l-gray-200'>
           <div className='flex flex-col items-center'>
             <div className='my-5 h-24 w-24'>
-              <img
-                src='https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn'
-                alt=''
-                className='w-full rounded-full object-cover'
-              />
+              <img src={previewImage || avatar} alt='' className='h-full w-full rounded-full object-cover' />
             </div>
-            <input className='hidden' type='file' accept='.jpg,.jpeg,.png' />
+            <input className='hidden' type='file' accept='.jpg,.jpeg,.png' ref={fileInputRef} onChange={onFileChange} />
             <button
+              onClick={handleUpload}
               type='button'
               className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'
             >
