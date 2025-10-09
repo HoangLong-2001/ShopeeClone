@@ -16,7 +16,7 @@ import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 type FormData = Pick<UserFormState, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & { date_of_birth: string }
 const profileSchema = userSchema.pick(['address', 'avatar', 'date_of_birth', 'name', 'phone'])
-
+const MAX_FILE_CAPACITIES = 1048576
 export default function Profile() {
   const { setProfile } = useContext(AppContext)
   const [file, setFile] = useState<File>()
@@ -99,7 +99,15 @@ export default function Profile() {
   })
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = event.target.files?.[0]
-    setFile(fileFromLocal)
+    fileInputRef.current?.setAttribute('value', '')
+    if (fileFromLocal && (fileFromLocal.size > MAX_FILE_CAPACITIES || !fileFromLocal.type.includes('image'))) {
+      toast.error(`Dụng lượng file tối đa 1 MB. Định dạng:.JPEG, .PNG`, {
+        position: 'top-center',
+        autoClose: 1500
+      })
+    } else {
+      setFile(fileFromLocal)
+    }
   }
   const handleUpload = () => {
     fileInputRef.current?.click()
@@ -177,7 +185,17 @@ export default function Profile() {
             <div className='my-5 h-24 w-24'>
               <img src={previewImage || avatar} alt='' className='h-full w-full rounded-full object-cover' />
             </div>
-            <input className='hidden' type='file' accept='.jpg,.jpeg,.png' ref={fileInputRef} onChange={onFileChange} />
+            <input
+              className='hidden'
+              type='file'
+              accept='.jpg,.jpeg,.png'
+              ref={fileInputRef}
+              onChange={onFileChange}
+              onClick={(event) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ;(event.target as HTMLInputElement).value = ''
+              }}
+            />
             <button
               onClick={handleUpload}
               type='button'
