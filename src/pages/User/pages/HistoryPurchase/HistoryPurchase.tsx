@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query"
-import classNames from "classnames"
-import { createSearchParams, Link } from "react-router"
-import { getPurchases } from "~/apis/purchase.api"
-import PATH from "~/constants/path"
-import { purchaseStatus } from "~/constants/purchase"
-import useQueryParams from "~/hooks/useQueryParams"
-import type { PurchaseListStatus } from "~/types/purchase.type"
-import { formatCurrency, generateNameId } from "~/utils/utils"
+import { useQuery } from '@tanstack/react-query'
+import classNames from 'classnames'
+import { createSearchParams, Link } from 'react-router'
+import { getPurchases } from '~/apis/purchase.api'
+import PATH from '~/constants/path'
+import { purchaseStatus } from '~/constants/purchase'
+import useQueryParams from '~/hooks/useQueryParams'
+import type { PurchaseListStatus } from '~/types/purchase.type'
+import { formatCurrency, generateNameId } from '~/utils/utils'
 
 const purchaseTabs = [
   { status: purchaseStatus.all, name: 'Tất cả' },
@@ -17,7 +17,7 @@ const purchaseTabs = [
   { status: purchaseStatus.cancelled, name: 'Đã hủy' }
 ]
 export default function HistoryPurchase() {
-   const queryParams: { status?: string } = useQueryParams()
+  const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchaseStatus.all
 
   const { data: purchasesInCartData } = useQuery({
