@@ -16,7 +16,8 @@ export default function ChangePassword() {
     register,
     handleSubmit,
     formState: { errors },
-    setError
+    setError,
+    reset
   } = useForm<FormData>({
     defaultValues: {
       password: '',
@@ -29,7 +30,7 @@ export default function ChangePassword() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const res = await updateProfileMutation.mutateAsync(omit(data, ['confirm_password']))
-
+      reset()
       toast.success(res.message, {
         autoClose: 1000
       })
