@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { Controller, FormProvider, useForm, useFormContext, type Resolver } from 'react-hook-form'
+import { Controller, FormProvider, useForm, type Resolver } from 'react-hook-form'
 import { getProfile, updateProfile, uploadAvatar } from '~/apis/user.api'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
@@ -151,29 +151,29 @@ export default function Profile() {
               </div>
             </div>
             <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
-            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>
-            <div className='sm:w-[80%] sm:pl-5'>
-              <Input
-                register={register}
-                name='name'
-                errorMessage={errors.name?.message}
-                placeholder='Tên'
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-              />
+              <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>
+              <div className='sm:w-[80%] sm:pl-5'>
+                <Input
+                  register={register}
+                  name='name'
+                  errorMessage={errors.name?.message}
+                  placeholder='Tên'
+                  classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                />
+              </div>
             </div>
-          </div>
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Số điện thoại</div>
-            <div className='sm:w-[80%] sm:pl-5'>
-              <Input
-                register={register}
-                name='phone'
-                errorMessage={errors.phone?.message}
-                placeholder='Số điện thoại'
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-              />
+            <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
+              <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Số điện thoại</div>
+              <div className='sm:w-[80%] sm:pl-5'>
+                <Input
+                  register={register}
+                  name='phone'
+                  errorMessage={errors.phone?.message}
+                  placeholder='Số điện thoại'
+                  classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                />
+              </div>
             </div>
-          </div>
             {/* <Info /> */}
             <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
               <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Địa chỉ</div>
