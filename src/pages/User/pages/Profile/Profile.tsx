@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { Controller, useForm, type Resolver } from 'react-hook-form'
+import { Controller, FormProvider, useForm, useFormContext, type Resolver } from 'react-hook-form'
 import { getProfile, updateProfile, uploadAvatar } from '~/apis/user.api'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
@@ -17,22 +17,48 @@ import InputFile from '~/components/InputFile'
 type FormData = Pick<UserFormState, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & { date_of_birth: string }
 const profileSchema = userSchema.pick(['address', 'avatar', 'date_of_birth', 'name', 'phone'])
-
+/**Test useFormContext */
+// const Info = () => {
+//   const {
+//     register,
+//     formState: { errors }
+//   } = useFormContext<FormData>()
+//   return (
+//     <>
+//       <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
+//         <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>
+//         <div className='sm:w-[80%] sm:pl-5'>
+//           <Input
+//             register={register}
+//             name='name'
+//             errorMessage={errors.name?.message}
+//             placeholder='Tên'
+//             classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+//           />
+//         </div>
+//       </div>
+//       <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
+//         <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Số điện thoại</div>
+//         <div className='sm:w-[80%] sm:pl-5'>
+//           <Input
+//             register={register}
+//             name='phone'
+//             errorMessage={errors.phone?.message}
+//             placeholder='Số điện thoại'
+//             classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+//           />
+//         </div>
+//       </div>
+//     </>
+//   )
+// }
 export default function Profile() {
   const { setProfile } = useContext(AppContext)
   const [file, setFile] = useState<File>()
   const previewImage = useMemo(() => {
     return file ? URL.createObjectURL(file) : ''
   }, [file])
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-    setError
-  } = useForm<FormData>({
+  const methods = useForm<FormData>({
     resolver: yupResolver(profileSchema) as Resolver<FormData, any, FormData>,
     defaultValues: {
       name: '',
@@ -42,6 +68,15 @@ export default function Profile() {
       date_of_birth: new Date(1990, 0, 1)
     }
   })
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+    setError
+  } = methods
   const avatar = watch('avatar')
   const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
@@ -106,15 +141,16 @@ export default function Profile() {
         <h1 className='text-lg font-medium capitalize text-gray-900'>Hồ Sơ Của Tôi</h1>
         <div className='mt-1 text-sm text-gray-700'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
       </div>
-      <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
-        <div className='mt-6 flex-grow md:mt-0 md:pr-12'>
-          <div className='flex flex-col flex-wrap sm:flex-row'>
-            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Email</div>
-            <div className='sm:w-[80%] sm:pl-5'>
-              <div className='pt-3 text-gray-700'>{profile?.email}</div>
+      <FormProvider {...methods}>
+        <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
+          <div className='mt-6 flex-grow md:mt-0 md:pr-12'>
+            <div className='flex flex-col flex-wrap sm:flex-row'>
+              <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Email</div>
+              <div className='sm:w-[80%] sm:pl-5'>
+                <div className='pt-3 text-gray-700'>{profile?.email}</div>
+              </div>
             </div>
-          </div>
-          <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
+            <div className='mt-6 flex flex-col flex-wrap sm:flex-row'>
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Tên</div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
@@ -138,49 +174,51 @@ export default function Profile() {
               />
             </div>
           </div>
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Địa chỉ</div>
-            <div className='sm:w-[80%] sm:pl-5'>
-              <Input
-                register={register}
-                name='address'
-                errorMessage={errors.address?.message}
-                placeholder='Địa chỉ'
-                classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
-              />
+            {/* <Info /> */}
+            <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
+              <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Địa chỉ</div>
+              <div className='sm:w-[80%] sm:pl-5'>
+                <Input
+                  register={register}
+                  name='address'
+                  errorMessage={errors.address?.message}
+                  placeholder='Địa chỉ'
+                  classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500 focus:shadow-sm'
+                />
+              </div>
             </div>
-          </div>
-          <Controller
-            control={control}
-            name='date_of_birth'
-            render={({ field }) => <DateSelect value={field.value} onChange={field.onChange} />}
-          />
+            <Controller
+              control={control}
+              name='date_of_birth'
+              render={({ field }) => <DateSelect value={field.value} onChange={field.onChange} />}
+            />
 
-          <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-            <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right' />
-            <div className='sm:w-[80%] sm:pl-5'>
-              <Button
-                type='submit'
-                className='flex h-9 items-center bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
-              >
-                Lưu
-              </Button>
+            <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
+              <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right' />
+              <div className='sm:w-[80%] sm:pl-5'>
+                <Button
+                  type='submit'
+                  className='flex h-9 items-center bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'
+                >
+                  Lưu
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='flex justify-center md:w-72 md:border-l md:border-l-gray-200'>
-          <div className='flex flex-col items-center'>
-            <div className='my-5 h-24 w-24'>
-              <img src={previewImage || avatar} alt='' className='h-full w-full rounded-full object-cover' />
-            </div>
-            <InputFile onChange={handleChange} />
-            <div className='mt-3 text-gray-400'>
-              <div>Dụng lượng file tối đa 1 MB</div>
-              <div>Định dạng:.JPEG, .PNG</div>
+          <div className='flex justify-center md:w-72 md:border-l md:border-l-gray-200'>
+            <div className='flex flex-col items-center'>
+              <div className='my-5 h-24 w-24'>
+                <img src={previewImage || avatar} alt='' className='h-full w-full rounded-full object-cover' />
+              </div>
+              <InputFile onChange={handleChange} />
+              <div className='mt-3 text-gray-400'>
+                <div>Dụng lượng file tối đa 1 MB</div>
+                <div>Định dạng:.JPEG, .PNG</div>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </FormProvider>
     </div>
   )
 }
