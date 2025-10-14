@@ -42,7 +42,8 @@ export default function ProductDetail() {
   })
   useEffect(() => {
     if (product && product.images.length > 0) setActiveImage(product.images[0])
-  }, [product])
+    else navigate('/1/1')
+  }, [product, navigate])
   const next = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation()
     if (product && currentIndexImages[1] < product?.images.length) {
