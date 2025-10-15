@@ -1,4 +1,4 @@
-import { defineConfig, type PluginOption} from 'vite'
+import { defineConfig, type PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { visualizer } from "rollup-plugin-visualizer";
@@ -17,7 +17,7 @@ export default defineConfig({
 
     },
   },
-  build:{
-    chunkSizeWarningLimit:800
+  build: {
+    chunkSizeWarningLimit: 800
   }
 })
