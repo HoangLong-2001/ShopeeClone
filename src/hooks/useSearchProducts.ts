@@ -4,7 +4,7 @@ import type { IFormState } from '~/types/common.type'
 import { schema } from '~/utils/rules'
 import useQueryConfig from './useQueryConfig'
 import { createSearchParams, useNavigate } from 'react-router'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import PATH from '~/constants/path'
 type FormData = Pick<IFormState, 'name'>
 const nameSchema = schema.pick(['name'])
