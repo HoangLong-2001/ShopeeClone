@@ -8,3 +8,4 @@ export type AuthResponse = IResponse<{
   expires_refresh_token: number
   user: User
 }>
+export type RefreshTokenResponse = IResponse<{ access_token: string }>

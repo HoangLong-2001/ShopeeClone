@@ -37,7 +37,7 @@ export default function Input<T extends FieldValues>({
   }
   const registerResult = register && name ? register(name, rules) : {}
   return (
-    <div className={className}>
+    <div className={'relative ' + className}>
       <input {...rest} className={classNameInput} {...registerResult} onChange={onChange} type={handleType()} />
       {rest.type === 'password' && openEye && (
         <svg
