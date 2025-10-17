@@ -2,6 +2,7 @@ import type { AxiosError } from 'axios'
 import axios, { HttpStatusCode } from 'axios'
 import { BASE_URL } from '~/constants/env'
 import userImage from '~/assets/images/no-purchase.png'
+import type { IResponse } from '~/types/common.type'
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   return axios.isAxiosError(error)
 }
@@ -10,6 +11,16 @@ export function isAxiosUnprocessableEntityError<FormError>(error: unknown): erro
 }
 export function isNotAxiosUnprocessableEntityError<FormError>(error: unknown): error is AxiosError<FormError> {
   return axios.isAxiosError(error) && error.response?.status !== HttpStatusCode.UnprocessableEntity
+}
+export function isAxiosUnauthorizedError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  return isAxiosError(error) && error.response?.status === HttpStatusCode.Unauthorized
+}
+export function isAxiosExpiredError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+  // eslint-disable-next-line prettier/prettier
+  return (
+    isAxiosUnauthorizedError<IResponse<{ name: string; message: string }>>(error) &&
+    error.response?.data.data?.name === 'EXPIRED_TOKEN'
+  )
 }
 export function formatCurrency(value: number) {
   return new Intl.NumberFormat('de-DE').format(value)

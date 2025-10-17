@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 import { Navigate, Outlet, type RouteObject } from 'react-router'
 import PATH from '~/constants/path'
 import { AppContext } from '~/contexts/app.context'
@@ -6,17 +6,17 @@ import CartLayout from '~/layouts/CartLayout'
 import LoginLayout from '~/layouts/LoginLayout/LoginLayout'
 import MainLayout from '~/layouts/MainLayout'
 import RegisterLayout from '~/layouts/RegisterLayout'
-import Cart from '~/pages/Cart'
-import Login from '~/pages/Login'
-import ProductDetail from '~/pages/ProductDetail/ProductDetail'
-import ProductList from '~/pages/ProductList'
-import Profile from '~/pages/User/pages/Profile'
-import Register from '~/pages/Register'
 import UserLayout from '~/pages/User/layouts/UserLayout'
-import ChangePassword from '~/pages/User/pages/ChangePassword'
-import HistoryPurchase from '~/pages/User/pages/HistoryPurchase'
-import NotFound from '~/pages/NotFound'
-
+// import NotFound from '~/pages/NotFound'
+const NotFound = lazy(() => import('~/pages/NotFound'))
+const ChangePassword = lazy(() => import('~/pages/User/pages/ChangePassword'))
+const Register = lazy(() => import('~/pages/Register'))
+const Profile = lazy(() => import('~/pages/User/pages/Profile'))
+const ProductList = lazy(() => import('~/pages/ProductList'))
+const ProductDetail = lazy(() => import('~/pages/ProductDetail'))
+const Login = lazy(() => import('~/pages/Login'))
+const Cart = lazy(() => import('~/pages/Cart'))
+const HistoryPurchase = lazy(() => import('~/pages/User/pages/HistoryPurchase'))
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
   return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
@@ -30,7 +30,9 @@ const routes: RouteObject[] = [
     path: PATH.home,
     element: (
       <MainLayout>
-        <ProductList />
+        <Suspense>
+          <ProductList />
+        </Suspense>
       </MainLayout>
     )
   },
@@ -38,7 +40,9 @@ const routes: RouteObject[] = [
     path: PATH.productDetail,
     element: (
       <MainLayout>
-        <ProductDetail />
+        <Suspense>
+          <ProductDetail />
+        </Suspense>
       </MainLayout>
     )
   },
@@ -50,7 +54,9 @@ const routes: RouteObject[] = [
         path: PATH.cart,
         element: (
           <CartLayout>
-            <Cart />
+            <Suspense>
+              <Cart />
+            </Suspense>
           </CartLayout>
         )
       },
@@ -64,15 +70,28 @@ const routes: RouteObject[] = [
         children: [
           {
             path: PATH.profile,
-            element: <Profile />
+
+            element: (
+              <Suspense>
+                <Profile />
+              </Suspense>
+            )
           },
           {
             path: PATH.changePassword,
-            element: <ChangePassword />
+            element: (
+              <Suspense>
+                <ChangePassword />
+              </Suspense>
+            )
           },
           {
             path: PATH.historyPurchase,
-            element: <HistoryPurchase />
+            element: (
+              <Suspense>
+                <HistoryPurchase />
+              </Suspense>
+            )
           }
         ]
       }
@@ -104,7 +123,9 @@ const routes: RouteObject[] = [
     path: '*',
     element: (
       <MainLayout>
-        <NotFound />
+        <Suspense>
+          <NotFound />
+        </Suspense>
       </MainLayout>
     )
   }
