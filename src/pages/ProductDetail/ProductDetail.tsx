@@ -15,6 +15,7 @@ import PATH from '~/constants/path'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
+
   const [quantity, setQuantity] = useState(1)
   const id = getIdFromNameId(nameId as string)
   const { data: productData } = useQuery({

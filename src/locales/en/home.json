@@ -1,0 +1,35 @@
+{
+  "asideFilter": {
+    "allCategories": "All categories",
+    "filterSearch": "Filter",
+    "apply": "apply",
+    "rating": {
+      "title": "Rating",
+      "more": "More"
+    },
+    "price": "Price",
+    "deleteAll": "delete all"
+  },
+  "sortProductList": {
+    "sortBy": "sort by",
+    "popular": "popular",
+    "newest": "newest",
+    "bestSeller": "best seller",
+    "price": "price",
+    "priceHighToLow":"price: high to low",
+    "priceLowToHigh":"price: low to high"
+  },
+  "pagination":{
+    "next":"next",
+    "previous":"prev"
+  },
+  "header":{
+    "login":"login",
+    "register":"register",
+    "user":{
+      "account":"My Account",
+      "purchase":"Purchase",
+      "logout":"Logout"
+    }
+  }
+}

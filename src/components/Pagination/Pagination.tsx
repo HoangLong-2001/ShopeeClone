@@ -1,4 +1,5 @@
 import cn from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { createSearchParams, Link } from 'react-router'
 import PATH from '~/constants/path'
 import type { QueryConfig } from '~/hooks/useQueryConfig'
@@ -16,6 +17,7 @@ const PageButton: React.FC<{ page: number; pageSize: number; queryConfig: QueryC
 }) => {
   let dotBefore = false
   let dotAfter = false
+
   const renderDotBefore = (index: number) => {
     if (!dotBefore) {
       dotBefore = true
@@ -75,10 +77,14 @@ const PageButton: React.FC<{ page: number; pageSize: number; queryConfig: QueryC
 }
 export default function Pagination({ queryConfig, pageSize }: Props) {
   const page = Number(queryConfig.page)
+  const { t } = useTranslation('home')
   return (
     <div className='mt-6 flex flex-wrap justify-center'>
       {page === 1 ? (
-        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>Prev</span>
+        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>
+          {' '}
+          {t('pagination.previous')}
+        </span>
       ) : (
         <Link
           to={{
@@ -90,13 +96,16 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
           }}
           className='mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'
         >
-          Prev
+          {t('pagination.previous')}
         </Link>
       )}
 
       <PageButton page={page} pageSize={pageSize} queryConfig={queryConfig} />
       {page === pageSize ? (
-        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>Next</span>
+        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>
+          {' '}
+          {t('pagination.previous')}
+        </span>
       ) : (
         <Link
           to={{
@@ -108,7 +117,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
           }}
           className='mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'
         >
-          Next
+          {t('pagination.next')}
         </Link>
       )}
     </div>

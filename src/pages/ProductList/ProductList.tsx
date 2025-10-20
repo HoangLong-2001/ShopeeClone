@@ -7,7 +7,6 @@ import Pagination from '~/components/Pagination'
 import type { ProductListConfig } from '~/types/product.type'
 import { getCategories } from '~/apis/category.api'
 import useQueryConfig from '~/hooks/useQueryConfig'
-
 export default function ProductList() {
   const queryConfig = useQueryConfig()
   const { data } = useQuery({
