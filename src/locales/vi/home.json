@@ -1,0 +1,35 @@
+{
+  "asideFilter": {
+    "allCategories": "Tất cả danh mục",
+    "filterSearch": "Bộ lọc",
+    "apply": "Áp dụng",
+    "rating": {
+      "title": "Đánh giá",
+      "more": "trở lên"
+    },
+    "price": "Khoảng giá",
+    "deleteAll": "Xóa tất cả"
+  },
+  "sortProductList": {
+    "sortBy": "Sắp xếp theo",
+    "popular": "Phổ biến",
+    "newest": "Mới nhất",
+    "bestSeller": "Bán chạy",
+    "price": "Giá",
+    "priceHighToLow":"Giá: Thấp đến cao",
+    "priceLowToHigh":"Giá: Cao đến thấp"
+  },
+  "pagination":{
+    "next":"Tiếp theo",
+    "previous":"Trước"
+  },
+  "header":{
+    "login":"Đăng nhập",
+    "register":"Đăng ký",
+   "user":{
+      "account":"Tài khoản của tôit",
+      "purchase":"Đơn mua",
+      "logout":"Đăng xuất"
+    }
+  }
+}

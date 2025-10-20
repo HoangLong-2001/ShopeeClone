@@ -1,12 +1,13 @@
 import type { QueryConfig } from '~/hooks/useQueryConfig'
 import { createSearchParams, useNavigate } from 'react-router'
 import PATH from '~/constants/path'
+import { useTranslation } from 'react-i18next'
 interface Props {
   queryConfig: QueryConfig
 }
 export default function RatingStar({ queryConfig }: Props) {
   const navigate = useNavigate()
-
+  const { t } = useTranslation('home')
   const handleFilterStar = (ratingFilter: number) => {
     navigate({
       pathname: PATH.home,
@@ -80,7 +81,7 @@ export default function RatingStar({ queryConfig }: Props) {
                     </svg>
                   )
                 })}
-              {index !== 0 && <span>Trở lên</span>}
+              {index !== 0 && <span> {t('asideFilter.rating.more')}</span>}
             </div>
           </li>
         ))}

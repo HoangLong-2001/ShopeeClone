@@ -13,6 +13,7 @@ import type { AnyObject, ObjectSchema } from 'yup'
 import { omit } from 'lodash'
 import RatingStar from '../RatingStar'
 import InputNumber from '~/components/InputNumber'
+import { useTranslation } from 'react-i18next'
 interface Props {
   categories: Category[]
   queryConfig: QueryConfig
@@ -35,6 +36,7 @@ const priceSchema = schema.pick(['price_max', 'price_min']) as ObjectSchema<
 >
 export default function AsideFilter({ queryConfig, categories }: Props) {
   const { category } = queryConfig
+  const { t } = useTranslation('home')
   const {
     control,
     handleSubmit,
@@ -88,7 +90,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             </g>
           </g>
         </svg>
-        Tất cả danh mục
+        {t('asideFilter.allCategories')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-500' />
       <ul>
@@ -138,11 +140,11 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             />
           </g>
         </svg>{' '}
-        Bộ lọc tìm kiếm{' '}
+        {t('asideFilter.filterSearch')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-500' />
       <div className='my-5'>
-        <div>Khoảng giá</div>
+        <div>{t('asideFilter.price')}</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='mb-2 flex items-center'>
             <Controller
@@ -193,19 +195,19 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             type='submit'
             className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'
           >
-            Áp dụng
+            {t('asideFilter.apply')}
           </Button>
         </form>
       </div>
       <div className='my-4 h-[1px] bg-gray-500' />
-      <div className='text-sm'>Đánh giá</div>
+      <div className='text-sm'>{t('asideFilter.rating.title')}</div>
       <RatingStar queryConfig={queryConfig} />
       <div className='my-4 h-[1px] bg-gray-500' />
       <Button
         onClick={handleRemoveAll}
         className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'
       >
-        Xóa tất cả
+        {t('asideFilter.deleteAll')}
       </Button>
     </div>
   )
