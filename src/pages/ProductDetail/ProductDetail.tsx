@@ -12,6 +12,8 @@ import { addToCart } from '~/apis/purchase.api'
 import { toast } from 'react-toastify'
 import { purchaseStatus } from '~/constants/purchase'
 import PATH from '~/constants/path'
+import { Helmet } from 'react-helmet-async'
+import { convert } from 'html-to-text'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
@@ -99,6 +101,17 @@ export default function ProductDetail() {
   return (
     product && (
       <div className='bg-gray-200 py-6'>
+        <Helmet>
+          <title>{product.name} | Shopee Clone</title>
+          <meta
+            name='description'
+            content={convert(product.description, {
+              limits: {
+                maxInputLength: 150
+              }
+            })}
+          />
+        </Helmet>
         <div className='container'>
           <div className='bg-white p-4 shadow'>
             <div className='grid grid-cols-12 gap-9'>
