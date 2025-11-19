@@ -63,8 +63,7 @@ export default function Login() {
   return (
     <div className='bg-orange'>
       <Helmet>
-        <title>Đăng nhập | Shopee Clone
-        </title>
+        <title>Đăng nhập | Shopee Clone</title>
       </Helmet>
       <div className='container'>
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>

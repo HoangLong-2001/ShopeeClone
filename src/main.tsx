@@ -8,8 +8,8 @@ import '~/i18n/i18next'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
- <BrowserRouter>
- <App/>
+    <BrowserRouter>
+      <App />
     </BrowserRouter>
   </StrictMode>
 )

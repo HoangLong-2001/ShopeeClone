@@ -1,5 +1,11 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
-import { clearFromLS, getAccessTokenFromLS, getRefreshTokenFromLS, saveAccessTokenToLS, saveRefreshTokenToLS } from '../auth'
+import {
+  clearFromLS,
+  getAccessTokenFromLS,
+  getRefreshTokenFromLS,
+  saveAccessTokenToLS,
+  saveRefreshTokenToLS
+} from '../auth'
 
 const access_token =
   'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzRhNjExNWZkYzVmMDM3ZTZmNjk0YiIsImVtYWlsIjoiZDdAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyMi0xMi0xNVQwOTo1MDo0Ny4xODhaIiwiaWF0IjoxNjcxMDk3ODQ3LCJleHAiOjE2NzExODQyNDd9.aRuh6TdD8sMlJuAA-YYg_b0xNwOK4gQzoHsqLczs9Gw'

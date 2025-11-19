@@ -7,7 +7,11 @@ test('isAxiosError', () => {
 })
 
 test('isNotAxiosUnprocessableEntityError', () => {
-  expect(isNotAxiosUnprocessableEntityError(new AxiosError(undefined, undefined, undefined, undefined, {
-    status: HttpStatusCode.BadGateway
-  } as any))).toBe(true)
+  expect(
+    isNotAxiosUnprocessableEntityError(
+      new AxiosError(undefined, undefined, undefined, undefined, {
+        status: HttpStatusCode.BadGateway
+      } as any)
+    )
+  ).toBe(true)
 })
