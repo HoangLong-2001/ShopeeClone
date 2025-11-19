@@ -6,7 +6,10 @@ import { visualizer } from "rollup-plugin-visualizer";
 export default defineConfig({
   plugins: [react(), visualizer()] as any,
   test: {
-    environment: 'jsdom'
+    environment: 'jsdom',
+    coverage: {
+      provider: 'v8' 
+    },
   },
   server: {
     port: 3000
