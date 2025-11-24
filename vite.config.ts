@@ -7,8 +7,10 @@ export default defineConfig({
   plugins: [react(), visualizer()] as any,
   test: {
     environment: 'jsdom',
+    setupFiles: path.resolve(__dirname, './vitest.setup.js'),
     coverage: {
-      provider: 'v8' 
+      provider: 'v8',
+
     },
   },
   server: {

@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import {
   clearFromLS,
   getAccessTokenFromLS,
@@ -13,8 +13,8 @@ const access_token =
 const refresh_token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzRhNjExNWZkYzVmMDM3ZTZmNjk0YiIsImVtYWlsIjoiZDdAZ21haWwuY29tIiwicm9sZXMiOlsiVXNlciJdLCJjcmVhdGVkX2F0IjoiMjAyMi0xMi0xMlQwODoxMjo1NS4xOTZaIiwiaWF0IjoxNjcwODMyNzc1LCJleHAiOjE2ODQ2NTY3NzV9.exhtfRyvl2Z5uAAfEQKtIyyUhP8q-K5wvHvHpWZz128'
 
-const profile =
-  '{"_id":"6374a6115fdc5f037e6f694b","roles":["User"],"email":"d7@gmail.com","createdAt":"2022-11-16T08:57:53.872Z","updatedAt":"2022-12-05T06:55:57.846Z","__v":0,"date_of_birth":"1997-01-13T17:00:00.000Z","name":"Dư Thanh Được 3","address":"Da nang, Vietnam","avatar":"44f75461-560e-42b5-a9d7-2b833a9f4d67.jpg","phone":"11111111111"}'
+// const profile =
+//   '{"_id":"6374a6115fdc5f037e6f694b","roles":["User"],"email":"d7@gmail.com","createdAt":"2022-11-16T08:57:53.872Z","updatedAt":"2022-12-05T06:55:57.846Z","__v":0,"date_of_birth":"1997-01-13T17:00:00.000Z","name":"Dư Thanh Được 3","address":"Da nang, Vietnam","avatar":"44f75461-560e-42b5-a9d7-2b833a9f4d67.jpg","phone":"11111111111"}'
 
 beforeEach(() => {
   localStorage.clear()

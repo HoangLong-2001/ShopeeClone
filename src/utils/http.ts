@@ -15,7 +15,7 @@ import { BASE_URL } from '~/constants/env'
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from '~/apis/auth.api'
 import type { User } from '~/types/user.type'
 
-class Http {
+export class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string
@@ -58,6 +58,7 @@ class Http {
           saveProfileToLS(data.data?.user as User)
         } else if (url === URL_LOGOUT) {
           this.accessToken = ''
+          this.refreshToken = ''
           clearFromLS()
         }
         return response
@@ -95,7 +96,6 @@ class Http {
           this.refreshToken = ''
           toast.error(error.response?.data?.data?.message || error.response?.data.message)
         }
-
         return Promise.reject(error)
       }
     )
